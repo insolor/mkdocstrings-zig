@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from mkdocs.exceptions import PluginError
-from mkdocstrings import BaseHandler, CollectionError, CollectorItem, get_logger
+from mkdocstrings import BaseHandler, CollectorItem, get_logger
 
 from mkdocstrings_handlers.zig._internal.config import ZigConfig, ZigOptions
 
@@ -65,7 +66,10 @@ class ZigHandler(BaseHandler):
         Returns:
             The combined options.
         """
-        extra = {**self.global_options.get("extra", {}), **local_options.get("extra", {})}
+        extra = {
+            **self.global_options.get("extra", {}),
+            **local_options.get("extra", {}),
+        }
         options = {**self.global_options, **local_options, "extra": extra}
         try:
             return ZigOptions.from_data(**options)
@@ -74,20 +78,144 @@ class ZigHandler(BaseHandler):
 
     def collect(self, identifier: str, options: ZigOptions) -> CollectorItem:  # noqa: ARG002
         """Collect data given an identifier and selection configuration."""
-        # In the implementation, you either run a specialized tool in a subprocess
-        # to capture its JSON output, that you load again in Python data structures,
-        # or you parse the source code directly, for example with tree-sitter.
-        #
-        # The `identifier` argument is the fully qualified name of the object to collect.
-        # For example, in Python, it would be 'package.module.function' to collect documentation
-        # for this function. Other languages have different conventions.
-        #
-        # The `options` argument is the configuration options for loading/rendering the data.
-        # It contains both the global and local options, combined together.
-        #
-        # You might want to store collected data in `self._collected`, for easier retrieval later,
-        # typically when mkdocstrings will try to get aliases for an identifier through your `get_aliases` method.
-        raise CollectionError("Implement me!")
+        # If identifier is a file path
+        if identifier.endswith(".zig"):
+            with open(identifier, "r", encoding="utf-8") as f:
+                code = f.read()
+        else:  # Treat as raw code
+            code = identifier
+
+        # Parse Zig code
+        parsed = self._parse_zig_code(code)
+
+        # Format for mkdocstrings
+        return self._format_for_mkdocstrings(parsed)
+
+    @staticmethod
+    def _parse_zig_code(code: str) -> dict[str, list[dict]]:
+        """
+        A minimal Zig parser that extracts:
+        - Module documentation (`//!`)
+        - Declaration documentation (`///`)
+        - Functions (`fn`)
+        - Constants (`const`)
+        - Structs (`struct`)
+        """
+        lines = code.split("\n")
+        parsed_data = {
+            "module_docs": [],  # For //! comments
+            "functions": [],
+            "constants": [],
+            "structs": [],
+        }
+
+        current_doc = []
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+
+            # Handle module documentation (//!)
+            if line.startswith("//!"):
+                # Collect all consecutive module doc lines
+                while i < len(lines) and lines[i].strip().startswith("//!"):
+                    parsed_data["module_docs"].append(lines[i].strip()[3:].strip())
+                    i += 1
+                continue
+
+            # Handle declaration documentation (///)
+            if line.startswith("///"):
+                # Collect all consecutive doc lines
+                doc_lines = []
+                while i < len(lines) and lines[i].strip().startswith("///"):
+                    doc_lines.append(lines[i].strip()[3:].strip())
+                    i += 1
+
+                # Skip empty lines between docs and declaration
+                while i < len(lines) and not lines[i].strip():
+                    i += 1
+
+                if i >= len(lines):
+                    break
+
+                line = lines[i].strip()
+                current_doc = "\n".join(doc_lines)
+
+                # Parse functions
+                if line.startswith("fn ") or " fn " in line:
+                    match = re.match(r"fn\s+([a-zA-Z0-9_]+)\s*\(", line)
+                    if match:
+                        parsed_data["functions"].append(
+                            {
+                                "name": match.group(1),
+                                "doc": current_doc,
+                            }
+                        )
+
+                # Parse constants
+                elif line.startswith("const "):
+                    match = re.match(r"const\s+([a-zA-Z0-9_]+)\s*=", line)
+                    if match:
+                        if "= struct" in line:
+                            # Handle structs
+                            parsed_data["structs"].append(
+                                {
+                                    "name": match.group(1),
+                                    "doc": current_doc,
+                                }
+                            )
+                        else:
+                            # Regular constants
+                            parsed_data["constants"].append(
+                                {
+                                    "name": match.group(1),
+                                    "doc": current_doc,
+                                }
+                            )
+
+                current_doc = []
+                continue
+
+            i += 1
+
+        # Join module docs into single string
+        if parsed_data["module_docs"]:
+            parsed_data["module_docs"] = "\n".join(parsed_data["module_docs"])
+        else:
+            parsed_data.pop("module_docs")
+
+        return parsed_data
+
+
+    @staticmethod
+    def _format_for_mkdocstrings(parsed: dict) -> CollectorItem:
+        """Formats parsed data for mkdocstrings consumption."""
+        return {
+            "module": {
+                "docstring": "\n".join(parsed.get("module_docs", [])),
+            },
+            "functions": [
+                {
+                    "name": func["name"],
+                    "docstring": func["doc"],
+                }
+                for func in parsed.get("functions", [])
+            ],
+            "constants": [
+                {
+                    "name": const["name"],
+                    "docstring": const["doc"],
+                    "value": const.get("value", ""),
+                }
+                for const in parsed.get("constants", [])
+            ],
+            "structs": [
+                {
+                    "name": struct["name"],
+                    "docstring": struct["doc"],
+                }
+                for struct in parsed.get("structs", [])
+            ],
+        }
 
     def render(self, data: CollectorItem, options: ZigOptions) -> str:
         """Render a template using provided data and configuration options."""

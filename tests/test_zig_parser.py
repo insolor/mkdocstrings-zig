@@ -1,4 +1,4 @@
-from mkdocstrings_handlers.zig._internal.zig_parser_minimal import _parse_zig_code
+from mkdocstrings_handlers.zig._internal.handler import ZigHandler
 
 
 def test_parser():
@@ -21,10 +21,10 @@ def test_parser():
     };
     """
 
-    parsed = _parse_zig_code(zig_code)
+    parsed = ZigHandler._parse_zig_code(zig_code)
     assert parsed == {
+        "module_docs": "This is module-level documentation\nIt describes the entire file",
         "functions": [{"name": "add", "doc": "Adds two numbers."}],
         "constants": [{"name": "PI", "doc": "A constant named PI."}],
-        "module_docs": "This is module-level documentation\nIt describes the entire file",
         "structs": [{"name": "Point", "doc": "A 2D point struct."}],
     }
