@@ -1,0 +1,20 @@
+# Changes here will be overwritten by Copier.
+_commit: 1.4.5
+_src_path: gh:mkdocstrings/handler-template
+author_email: 2442833+insolor@users.noreply.github.com
+author_fullname: insolor
+author_username: insolor
+copyright_date: '2025'
+copyright_holder: insolor
+copyright_holder_email: 2442833+insolor@users.noreply.github.com
+copyright_license: ISC
+insiders: false
+language: zig
+project_description: A Zig handler for mkdocstrings.
+project_name: mkdocstrings-zig
+python_package_distribution_name: mkdocstrings-zig
+python_package_import_name: zig
+repository_name: mkdocstrings-zig
+repository_namespace: insolor
+repository_provider: github.com
+
