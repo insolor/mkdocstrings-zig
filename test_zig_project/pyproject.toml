@@ -1,0 +1,16 @@
+[project]
+name = "test-zig-project"
+version = "0.1.0"
+description = "Example of zig project documentation using mkdocstrings"
+requires-python = ">=3.10"
+dependencies = [
+    "mkdocs>=1.6",
+    "mkdocstrings>=0.18",
+    "mkdocs-git-revision-date-localized-plugin>=1.2",
+    "mkdocs-material>=9.5",
+    "mkdocstrings_zig",
+    "typing_extensions",
+]
+
+[tool.uv.sources]
+mkdocstrings_zig = { path = "../" }

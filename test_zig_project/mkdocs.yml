@@ -1,0 +1,6 @@
+site_name: Example of zig project documentation using mkdocstrings
+
+plugins:
+- mkdocstrings:
+    handlers:
+      zig:
