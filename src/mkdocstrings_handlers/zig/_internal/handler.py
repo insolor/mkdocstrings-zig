@@ -177,14 +177,7 @@ class ZigHandler(BaseHandler):
 
             i += 1
 
-        # Join module docs into single string
-        if parsed_data["module_docs"]:
-            parsed_data["module_docs"] = "\n".join(parsed_data["module_docs"])
-        else:
-            parsed_data.pop("module_docs")
-
         return parsed_data
-
 
     @staticmethod
     def _format_for_mkdocstrings(parsed: dict) -> CollectorItem:
