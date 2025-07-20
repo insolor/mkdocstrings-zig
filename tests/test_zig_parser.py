@@ -47,5 +47,11 @@ def test_parser():
                 "doc": "A constant named PI.",
             }
         ],
-        "structs": [{"name": "Point", "doc": "A 2D point struct."}],
+        "structs": [
+            {
+                "name": "Point",
+                "signature": None,
+                "doc": "A 2D point struct.",
+            }
+        ],
     }
