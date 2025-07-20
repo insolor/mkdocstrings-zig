@@ -5,7 +5,7 @@
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-zig.svg)](https://pypi.org/project/mkdocstrings-zig/)
 [![gitter](https://badges.gitter.im/join%20chat.svg)](https://app.gitter.im/#/room/#mkdocstrings-zig:gitter.im)
 
-A Zig handler for mkdocstrings.
+A Zig handler for [mkdocstrings](https://mkdocstrings.github.io). Makes it possible to create documentation from code in Zig language using [mkdocs](https://github.com/mkdocs/mkdocs).
 
 ## Usage
 
