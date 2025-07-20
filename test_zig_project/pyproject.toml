@@ -13,4 +13,4 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-mkdocstrings_zig = { path = "../" }
+mkdocstrings_zig = { path = "../", editable = true }

@@ -89,7 +89,10 @@ class ZigHandler(BaseHandler):
         parsed = self._parse_zig_code(code)
 
         # Format for mkdocstrings
-        return self._format_for_mkdocstrings(parsed)
+        formatted = self._format_for_mkdocstrings(parsed)
+        formatted["path"] = identifier
+        formatted["name"] = identifier
+        return formatted
 
     @staticmethod
     def _parse_zig_code(code: str) -> dict[str, list[dict]]:
