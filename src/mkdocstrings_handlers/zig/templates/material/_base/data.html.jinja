@@ -66,9 +66,7 @@ Context:
           {% for func in data.functions %}
           <div class="function">
               <h3>{{ func.name }}</h3>
-              {% if func.signature %}
               {{ func.signature | highlight(language="zig") }}
-              {% endif %}
               {% if func.docstring %}
               <div class="docstring">
                   {{ func.docstring | safe }}
