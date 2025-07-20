@@ -61,11 +61,26 @@ Context:
         </div>
         {% endif %}
         
+        {% if data.constants %}
+          <h2>Constants</h2>
+          {% for constant in data.constants %}
+          <div class="constant">
+              {{ constant.signature | highlight(language="zig") }}
+              {# <h3>{{ constant.name }}</h3> #}
+              {% if constant.docstring %}
+              <div class="docstring">
+                  {{ constant.docstring | safe }}
+              </div>
+              {% endif %}
+          </div>
+          {% endfor %}
+        {% endif %}
+        
         {% if data.functions %}
           <h2>Functions</h2>
           {% for func in data.functions %}
           <div class="function">
-              <h3>{{ func.name }}</h3>
+              {# <h3>{{ func.name }}</h3> #}
               {{ func.signature | highlight(language="zig") }}
               {% if func.docstring %}
               <div class="docstring">

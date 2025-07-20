@@ -167,11 +167,12 @@ class ZigHandler(BaseHandler):
                                     "doc": current_doc,
                                 }
                             )
-                        else:
+                        elif "@import" not in line:
                             # Regular constants
                             parsed_data["constants"].append(
                                 {
                                     "name": match.group(1),
+                                    "signature": line,
                                     "doc": current_doc,
                                 }
                             )
@@ -201,6 +202,7 @@ class ZigHandler(BaseHandler):
             "constants": [
                 {
                     "name": const["name"],
+                    "signature": const["signature"],
                     "docstring": const["doc"],
                     "value": const.get("value", ""),
                 }
