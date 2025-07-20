@@ -65,13 +65,28 @@ Context:
           <h2>Constants</h2>
           {% for constant in data.constants %}
           <div class="constant">
-              {{ constant.signature | highlight(language="zig") }}
-              {# <h3>{{ constant.name }}</h3> #}
-              {% if constant.docstring %}
-              <div class="docstring">
-                  {{ constant.docstring | safe }}
-              </div>
-              {% endif %}
+            {{ constant.signature | highlight(language="zig") }}
+            {# <h3>{{ constant.name }}</h3> #}
+            {% if constant.docstring %}
+            <div class="docstring">
+              {{ constant.docstring | safe }}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        {% endif %}
+        
+        {% if data.structs %}
+          <h2>Structures</h2>
+          {% for structs in data.structs %}
+          <div class="structs">
+            {# {{ structs.signature | highlight(language="zig") }} #}
+            <h3>{{ structs.name }}</h3>
+            {% if structs.docstring %}
+            <div class="docstring">
+              {{ structs.docstring | safe }}
+            </div>
+            {% endif %}
           </div>
           {% endfor %}
         {% endif %}
@@ -80,13 +95,13 @@ Context:
           <h2>Functions</h2>
           {% for func in data.functions %}
           <div class="function">
-              {# <h3>{{ func.name }}</h3> #}
-              {{ func.signature | highlight(language="zig") }}
-              {% if func.docstring %}
-              <div class="docstring">
-                  {{ func.docstring | safe }}
-              </div>
-              {% endif %}
+            {# <h3>{{ func.name }}</h3> #}
+            {{ func.signature | highlight(language="zig") }}
+            {% if func.docstring %}
+            <div class="docstring">
+              {{ func.docstring | safe }}
+            </div>
+            {% endif %}
           </div>
           {% endfor %}
         {% endif %}
