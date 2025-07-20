@@ -12,3 +12,12 @@ pub export fn add(a: i32, b: i32) i32 {
 test "basic add functionality" {
     try testing.expect(add(3, 7) == 10);
 }
+
+/// Point structure
+const Point = struct {
+    x: u32,
+    y: u32,
+};
+
+/// 3d vector structure
+const Vec3 = struct { x: f32, y: f32, z: f32 };
