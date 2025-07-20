@@ -23,7 +23,7 @@ pip install mkdocs-material
 ```yaml
 site_name: Example of zig project documentation using mkdocstrings
 
-# remove if you are not using mkdocs-materail theme
+# remove if you are not using mkdocs-material theme
 # or replace it with the theme of your choice
 theme:
   name: material
