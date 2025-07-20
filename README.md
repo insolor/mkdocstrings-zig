@@ -15,7 +15,7 @@ pip install 'mkdocstrings[zig]'
 pip install mkdocs-material
 ```
 
-`mkdocs-material` theme installation is optional, but recommended for better look and feel.
+[mkdocs-material](https://squidfunk.github.io/mkdocs-material/) theme installation is optional, but recommended for better look and feel.
 
 ### mkdocs.yml example
 
