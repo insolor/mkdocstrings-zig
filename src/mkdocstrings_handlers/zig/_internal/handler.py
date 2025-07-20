@@ -193,6 +193,7 @@ class ZigHandler(BaseHandler):
             "functions": [
                 {
                     "name": func["name"],
+                    "signature": func["signature"],
                     "docstring": func["doc"],
                 }
                 for func in parsed.get("functions", [])

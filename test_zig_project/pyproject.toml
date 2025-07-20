@@ -8,9 +8,9 @@ dependencies = [
     "mkdocstrings>=0.18",
     "mkdocs-git-revision-date-localized-plugin>=1.2",
     "mkdocs-material>=9.5",
-    "mkdocstrings_zig",
+    "mkdocstrings-zig",
     "typing_extensions",
 ]
 
 [tool.uv.sources]
-mkdocstrings_zig = { path = "../", editable = true }
+mkdocstrings-zig = { path = "../", editable = true }
