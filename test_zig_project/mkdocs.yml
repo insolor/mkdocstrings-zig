@@ -5,8 +5,4 @@ plugins:
     default_handler: zig
     handlers:
       zig:
-        options:
-          # include:
-          #   - "**/*.zig"
-          # paths:
-          #   - src
+        options: {}

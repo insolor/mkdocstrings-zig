@@ -1,3 +1,3 @@
 # Project Documentation
 
-::: src.main.zig
+::: src/main.zig
