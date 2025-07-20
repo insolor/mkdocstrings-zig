@@ -11,7 +11,7 @@ A Zig handler for [mkdocstrings](https://mkdocstrings.github.io). Makes it possi
 ### Installation
 
 ```bash
-pip install mkdocstrings-zig
+pip install 'mkdocstrings[zig]'
 pip install mkdocs-material
 ```
 
