@@ -145,11 +145,12 @@ class ZigHandler(BaseHandler):
 
                 # Parse functions
                 if line.startswith("fn ") or " fn " in line:
-                    match = re.match(r"fn\s+([a-zA-Z0-9_]+)\s*\(", line)
+                    match = re.search(r"fn\s+([a-zA-Z0-9_]+)\s*\(", line)
                     if match:
                         parsed_data["functions"].append(
                             {
                                 "name": match.group(1),
+                                "signature": line.strip("{ "),
                                 "doc": current_doc,
                             }
                         )

@@ -1,5 +1,8 @@
 site_name: Example of zig project documentation using mkdocstrings
 
+theme:
+  name: material
+
 plugins:
 - mkdocstrings:
     default_handler: zig

@@ -42,7 +42,9 @@ Context:
 
       This block renders the signature for the data.
       -#}
+      {% if data.signature %}
       {{ data.signature | highlight(language="zig") }}
+      {% endif %}
     {% endblock signature %}
 
     <div class="doc doc-contents {% if root %}first{% endif %}">
@@ -53,6 +55,26 @@ Context:
         It contains other blocks that users can override.
         Overriding the contents block allows to rearrange the order of the blocks.
         -#}
+        {% if data.module %}
+        <div class="docstring">
+            {{ data.module.docstring | safe }}
+        </div>
+        {% endif %}
+        
+        {% if data.functions %}
+          <h2>Functions</h2>
+          {% for func in data.functions %}
+          <div class="function">
+              <h3>{{ func.name }}</h3>
+              <pre><code>{{ func.signature }}</code></pre>
+              {% if func.docstring %}
+              <div class="docstring">
+                  {{ func.docstring | safe }}
+              </div>
+              {% endif %}
+          </div>
+          {% endfor %}
+        {% endif %}
       {% endblock contents %}
     </div>
 
