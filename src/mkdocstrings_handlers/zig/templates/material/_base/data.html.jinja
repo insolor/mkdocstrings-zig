@@ -78,13 +78,15 @@ Context:
         
         {% if data.structs %}
           <h2>Structures</h2>
-          {% for structs in data.structs %}
-          <div class="structs">
-            {# {{ structs.signature | highlight(language="zig") }} #}
-            <h3>{{ structs.name }}</h3>
-            {% if structs.docstring %}
+          {% for struct in data.structs %}
+          <div class="struct">
+            <h3>{{ struct.name }}</h3>
+            {% if struct.signature %}
+            {{ struct.signature | highlight(language="zig") }}
+            {% endif %}
+            {% if struct.docstring %}
             <div class="docstring">
-              {{ structs.docstring | safe }}
+              {{ struct.docstring | safe }}
             </div>
             {% endif %}
           </div>

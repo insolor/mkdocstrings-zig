@@ -164,6 +164,7 @@ class ZigHandler(BaseHandler):
                             parsed_data["structs"].append(
                                 {
                                     "name": match.group(1),
+                                    "signature": line if line.endswith(";") else None,
                                     "doc": current_doc,
                                 }
                             )
@@ -211,6 +212,7 @@ class ZigHandler(BaseHandler):
             "structs": [
                 {
                     "name": struct["name"],
+                    "signature": struct["signature"],
                     "docstring": struct["doc"],
                 }
                 for struct in parsed.get("structs", [])
