@@ -45,9 +45,9 @@ Context:
         It contains other blocks that users can override.
         Overriding the contents block allows to rearrange the order of the blocks.
         -#}
-        {% if data.docstring %}
+        {% if data.doc %}
         <div class="docstring">
-            {{ data.docstring | safe }}
+            {{ data.doc | safe }}
         </div>
         {% endif %}
         
@@ -59,9 +59,9 @@ Context:
             {{ constant.signature | highlight(language="zig") }}
             {% endif %}
             {# <h3>{{ constant.name }}</h3> #}
-            {% if constant.docstring %}
+            {% if constant.doc %}
             <div class="docstring">
-              {{ constant.docstring | safe }}
+              {{ constant.doc | safe }}
             </div>
             {% endif %}
           </div>
@@ -76,9 +76,9 @@ Context:
             {% if struct.signature %}
             {{ struct.signature | highlight(language="zig") }}
             {% endif %}
-            {% if struct.docstring %}
+            {% if struct.doc %}
             <div class="docstring">
-              {{ struct.docstring | safe }}
+              {{ struct.doc | safe }}
             </div>
             {% endif %}
           </div>
@@ -91,9 +91,9 @@ Context:
           <div class="function">
             {# <h3>{{ func.name }}</h3> #}
             {{ func.signature | highlight(language="zig") }}
-            {% if func.docstring %}
+            {% if func.doc %}
             <div class="docstring">
-              {{ func.docstring | safe }}
+              {{ func.doc | safe }}
             </div>
             {% endif %}
           </div>

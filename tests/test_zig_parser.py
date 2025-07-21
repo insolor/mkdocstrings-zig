@@ -32,37 +32,37 @@ def test_parser() -> None:
 
     parsed = ZigDocsExtractor().get_docs(zig_code)
     assert parsed == {
-        "docstring": "This is module-level documentation\nIt describes the entire file",
+        "doc": "This is module-level documentation\nIt describes the entire file",
         "functions": [
             {
                 "name": "add",
-                "docstring": "Adds two numbers.",
+                "doc": "Adds two numbers.",
                 "signature": "fn add(a: i32, b: i32) i32",
             },
             {
                 "name": "main",
-                "docstring": "Main function",
+                "doc": "Main function",
                 "signature": "pub fn main() void",
             },
         ],
         "constants": [
             {
                 "name": "PI",
-                "docstring": "A constant named PI.",
+                "doc": "A constant named PI.",
             },
         ],
         "structs": [
             {
                 "name": "Point",
-                "docstring": "A 2D point struct.",
+                "doc": "A 2D point struct.",
                 "fields": [
                     {
-                        "docstring": "horizontal coordinate",
+                        "doc": "horizontal coordinate",
                         "name": "x",
                         "type": "i32",
                     },
                     {
-                        "docstring": "vertical coorinate",
+                        "doc": "vertical coorinate",
                         "name": "y",
                         "type": "i32",
                     },

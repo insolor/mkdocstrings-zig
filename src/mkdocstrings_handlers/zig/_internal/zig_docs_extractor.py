@@ -19,7 +19,7 @@ class _ZigDocsExtractor:
         code_bytes = code.encode("utf-8")
         tree = self.parser.parse(code_bytes)
         return {
-            "docstring": "\n".join(self._get_module_docs(tree, code_bytes)),
+            "doc": "\n".join(self._get_module_docs(tree, code_bytes)),
             "functions": self._get_functions(tree, code_bytes),
             "constants": self._get_constants(tree, code_bytes),
             "structs": self._get_structures(tree, code_bytes),
@@ -57,7 +57,7 @@ class _ZigDocsExtractor:
                     functions.append(
                         {
                             "name": fn_name,
-                            "docstring": self._get_doc_comments(node, code),
+                            "doc": self._get_doc_comments(node, code),
                             "signature": self._get_node_text(node, code)
                             .split("{")[0]
                             .strip(),
@@ -92,7 +92,7 @@ class _ZigDocsExtractor:
                     constants.append(
                         {
                             "name": const_name,
-                            "docstring": self._get_doc_comments(node, code),
+                            "doc": self._get_doc_comments(node, code),
                         },
                     )
 
@@ -133,7 +133,7 @@ class _ZigDocsExtractor:
                 structures.append(
                     {
                         "name": struct_name,
-                        "docstring": self._get_doc_comments(node, code),
+                        "doc": self._get_doc_comments(node, code),
                         "fields": self._get_structure_fields(node, code),
                     },
                 )
@@ -180,7 +180,7 @@ class _ZigDocsExtractor:
                         {
                             "name": field_name,
                             "type": field_type,
-                            "docstring": self._get_doc_comments(field_node, code),
+                            "doc": self._get_doc_comments(field_node, code),
                         },
                     )
 
