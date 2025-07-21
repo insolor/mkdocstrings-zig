@@ -102,7 +102,7 @@ class _ZigDocsExtractor:
 
     def _is_import(self, node: Node) -> bool:
         node_text = self._get_node_text(node)
-        import_patterns = ("@import")
+        import_patterns = ("@import",)
         return any(pattern in node_text for pattern in import_patterns)
 
     def _get_node_text(self, node: Node) -> str:
