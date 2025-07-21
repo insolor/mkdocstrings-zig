@@ -68,6 +68,11 @@ class _ZigDocsExtractor:
                     )
 
         return functions
+    
+    def _get_node_name(self, node: Node) -> str | None:
+        for child in node.children:
+            if child.type == "identifier":
+                return self._get_node_text(child)
 
     def _get_constants(self) -> list:
         """Extract constants with /// docs."""
@@ -83,14 +88,7 @@ class _ZigDocsExtractor:
                 if self._is_import(node):
                     continue
 
-                const_name = None
-
-                # Get constant name
-                for child in node.children:
-                    if child.type == "identifier":
-                        const_name = self._get_node_text(child)
-                        break
-
+                const_name = self._get_node_name(node)
                 if const_name:
                     constants.append(
                         {
@@ -105,8 +103,7 @@ class _ZigDocsExtractor:
         node_text = self._get_node_text(node)
 
         # Common import patterns
-        import_patterns = ["= @import(", ".import("]
-
+        import_patterns = ["@import", ".import"]
         return any(pattern in node_text for pattern in import_patterns)
 
     def _get_node_text(self, node: Node) -> str:
@@ -120,14 +117,7 @@ class _ZigDocsExtractor:
 
         for node in root.children:
             if node.type == "variable_declaration" and "struct" in self._get_node_text(node):
-                struct_name = None
-
-                # Extract struct name
-                for child in node.children:
-                    if child.type == "identifier":
-                        struct_name = self._get_node_text(child)
-                        break
-
+                struct_name = self._get_node_name(node)
                 if not struct_name:
                     continue
 
@@ -154,7 +144,6 @@ class _ZigDocsExtractor:
         return "\n".join(doc_comments)
 
     def _get_structure_fields(self, node: Node) -> list:
-        # Get struct fields
         fields = []
 
         for child in node.children:
