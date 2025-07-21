@@ -86,7 +86,6 @@ class _ZigDocsExtractor:
                 node.type == "variable_declaration"
                 and "struct" not in self._get_node_text(node)
             ):
-                # Skip imports (@import or std.import-like patterns)
                 if self._is_import(node):
                     continue
 
@@ -103,9 +102,7 @@ class _ZigDocsExtractor:
 
     def _is_import(self, node: Node) -> bool:
         node_text = self._get_node_text(node)
-
-        # Common import patterns
-        import_patterns = ["@import", ".import"]
+        import_patterns = ("@import")
         return any(pattern in node_text for pattern in import_patterns)
 
     def _get_node_text(self, node: Node) -> str:
