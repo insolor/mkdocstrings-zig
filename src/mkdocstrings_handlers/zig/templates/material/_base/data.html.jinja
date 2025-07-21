@@ -55,7 +55,9 @@ Context:
           <h2>Constants</h2>
           {% for constant in data.constants %}
           <div class="constant">
+            {% if constant.signature %}
             {{ constant.signature | highlight(language="zig") }}
+            {% endif %}
             {# <h3>{{ constant.name }}</h3> #}
             {% if constant.docstring %}
             <div class="docstring">
