@@ -53,8 +53,8 @@ As usual:
 
 If you are unsure about how to fix or ignore a warning, just let the continuous integration fail, and we will help you during review.
 
-Don't bother updating the changelog, we will take care of this.
-
+<!-- Don't bother updating the changelog, we will take care of this. -->
+<!--
 ## Commit message convention
 
 Commit messages must follow our convention based on the [Angular style](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#format-of-the-commit-message) or the [Karma convention](https://karma-runner.github.io/4.0/dev/git-commit-msg.html):
@@ -118,3 +118,4 @@ git push -f
 ```
 
 If this seems all too complicated, you can push or force-push each new commit, and we will squash them ourselves if needed, before merging.
+-->
