@@ -86,7 +86,7 @@ class ZigHandler(BaseHandler):
             code = identifier
 
         # Parse Zig code
-        parsed = ZigDocsExtractor.get_docs(code)
+        parsed = ZigDocsExtractor().get_docs(code)
 
         parsed["path"] = identifier
         parsed["name"] = identifier
