@@ -16,15 +16,16 @@ class _ZigDocsExtractor:
         self.parser = Parser(self.ZIG_LANGUAGE)
 
     def get_docs(self, code: str) -> dict:
-        tree = self.parser.parse(bytes(code, "utf8"))
+        code_bytes = code.encode("utf-8")
+        tree = self.parser.parse(code_bytes)
         return {
-            "docstring": "\n".join(self._get_module_docs(tree, code)),
-            "functions": self._get_functions(tree, code),
-            "constants": self._get_constants(tree, code),
-            "structs": self._get_structures(tree, code),
+            "docstring": "\n".join(self._get_module_docs(tree, code_bytes)),
+            "functions": self._get_functions(tree, code_bytes),
+            "constants": self._get_constants(tree, code_bytes),
+            "structs": self._get_structures(tree, code_bytes),
         }
 
-    def _get_module_docs(self, tree: Tree, code: str) -> list:
+    def _get_module_docs(self, tree: Tree, code: bytes) -> list:
         """Extract //! module-level docs."""
         docs = []
         root = tree.root_node
@@ -37,7 +38,7 @@ class _ZigDocsExtractor:
 
         return docs
 
-    def _get_functions(self, tree: Tree, code: str) -> list:
+    def _get_functions(self, tree: Tree, code: bytes) -> list:
         """Extract functions with /// docs."""
         functions = []
         root = tree.root_node
@@ -65,7 +66,7 @@ class _ZigDocsExtractor:
 
         return functions
 
-    def _get_constants(self, tree: Tree, code: str) -> list:
+    def _get_constants(self, tree: Tree, code: bytes) -> list:
         """Extract constants with /// docs."""
         constants = []
         root = tree.root_node
@@ -97,7 +98,7 @@ class _ZigDocsExtractor:
 
         return constants
 
-    def _is_import(self, node: Node, code: str) -> bool:
+    def _is_import(self, node: Node, code: bytes) -> bool:
         node_text = self._get_node_text(node, code)
 
         # Common import patterns
@@ -105,11 +106,11 @@ class _ZigDocsExtractor:
 
         return any(pattern in node_text for pattern in import_patterns)
 
-    def _get_node_text(self, node: Node, code: str) -> str:
+    def _get_node_text(self, node: Node, code: bytes) -> str:
         """Extract source text for a node."""
-        return code[node.start_byte : node.end_byte]
+        return code[node.start_byte : node.end_byte].decode("utf-8")
 
-    def _get_structures(self, tree: Tree, code: str) -> list:
+    def _get_structures(self, tree: Tree, code: bytes) -> list:
         """Extract struct definitions with documentation."""
         structures = []
         root = tree.root_node
@@ -139,7 +140,7 @@ class _ZigDocsExtractor:
 
         return structures
 
-    def _get_doc_comments(self, node: Node, code: str) -> str:
+    def _get_doc_comments(self, node: Node, code: bytes) -> str:
         doc_comments = []
 
         prev = node.prev_named_sibling
@@ -151,7 +152,7 @@ class _ZigDocsExtractor:
 
         return "\n".join(doc_comments)
 
-    def _get_structure_fields(self, node: Node, code: str) -> list:
+    def _get_structure_fields(self, node: Node, code: bytes) -> list:
         # Get struct fields
         fields = []
 
