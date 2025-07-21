@@ -8,7 +8,7 @@ A Zig handler for [mkdocstrings](https://mkdocstrings.github.io). Makes it possi
 
 ## Demo
 
-See [demo documentation](https://insolor.github.io/mkdocstrings-zig/) generated from [test_zig_project](https://github.com/insolor/mkdocstrings-zig/tree/main/test_zig_project).
+See [demo documentation](https://insolor.github.io/mkdocstrings-zig/demo) generated from [test_zig_project](https://github.com/insolor/mkdocstrings-zig/tree/main/test_zig_project).
 
 ## Usage
 
