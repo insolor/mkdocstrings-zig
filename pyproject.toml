@@ -30,6 +30,8 @@ classifiers = [
 ]
 dependencies = [
     "mkdocstrings>=0.18",
+    "tree-sitter>=0.25.0",
+    "tree-sitter-zig>=1.1.2",
 ]
 
 [project.urls]
