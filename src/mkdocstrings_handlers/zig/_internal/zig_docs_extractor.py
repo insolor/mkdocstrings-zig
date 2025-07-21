@@ -71,7 +71,7 @@ class _ZigDocsExtractor:
 
     def _get_node_name(self, node: Node) -> str | None:
         for child in node.children:
-            if child.type == "identifier":
+            if child.type in ("identifier", "builtin_identifier"):
                 return self._get_node_text(child)
 
         return None
@@ -101,9 +101,11 @@ class _ZigDocsExtractor:
         return constants
 
     def _is_import(self, node: Node) -> bool:
-        node_text = self._get_node_text(node)
-        import_patterns = ("@import",)
-        return any(pattern in node_text for pattern in import_patterns)
+        for child in node.children:
+            if child.type == "builtin_function" and self._get_node_name(child) == "@import":
+                return True
+
+        return False
 
     def _get_node_text(self, node: Node) -> str:
         """Extract source text for a node."""
@@ -180,6 +182,8 @@ def _main() -> None:
     import json  # noqa: PLC0415
 
     code = """
+    const std = @import("std");
+
     /// A spreadsheet position
     pub const Pos = struct {
         /// (0-indexed) row
