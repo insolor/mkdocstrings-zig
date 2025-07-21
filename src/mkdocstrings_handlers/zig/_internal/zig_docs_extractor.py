@@ -173,6 +173,7 @@ class _ZigDocsExtractor:
                         continue
                     else:
                         field_type = self._get_node_text(child, code)
+                        break
 
                 if field_name and field_type:
                     fields.append(
