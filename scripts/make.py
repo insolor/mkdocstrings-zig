@@ -144,6 +144,7 @@ def main() -> int:
         cmd = args.pop(0)
 
         if cmd == "run":
+            print(args)
             run("default", *args)
             return 0
 

@@ -1,4 +1,4 @@
-from mkdocstrings_handlers.zig._internal.handler import ZigHandler
+from mkdocstrings_handlers.zig._internal.zig_docs_extractor import ZigDocsExtractor
 
 
 def test_parser() -> None:
@@ -26,7 +26,7 @@ def test_parser() -> None:
     }
     """
 
-    parsed = ZigHandler._parse_zig_code(zig_code)
+    parsed = ZigDocsExtractor().get_docs(zig_code)
     assert parsed == {
         "docstring": "This is module-level documentation\nIt describes the entire file",
         "functions": [
@@ -40,14 +40,12 @@ def test_parser() -> None:
         "constants": [
             {
                 "name": "PI",
-                "signature": "const PI = 3.14159;",
                 "docstring": "A constant named PI.",
             },
         ],
         "structs": [
             {
                 "name": "Point",
-                "signature": None,
                 "docstring": "A 2D point struct.",
             },
         ],
