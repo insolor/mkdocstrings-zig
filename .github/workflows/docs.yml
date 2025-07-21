@@ -2,16 +2,7 @@ name: Documentation
 on:
   push:
     branches:
-      - master
       - main
-    paths:
-      - '.github/workflows/docs.yml'
-      - 'README.md'
-      - 'pyproject.toml'
-      - 'uv.lock'
-      - 'mkdocs.yml'
-      - 'docs/*'
-      - 'test_zig_project/*'
 
 permissions:
   contents: write
