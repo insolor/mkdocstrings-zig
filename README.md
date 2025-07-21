@@ -6,6 +6,10 @@
 
 A Zig handler for [mkdocstrings](https://mkdocstrings.github.io). Makes it possible to create documentation from code in Zig language using [mkdocs](https://github.com/mkdocs/mkdocs).
 
+## Demo
+
+See [demo documentation](https://insolor.github.io/mkdocstrings-zig/) generated from [test_zig_project](https://github.com/insolor/mkdocstrings-zig/tree/main/test_zig_project).
+
 ## Usage
 
 ### Installation
