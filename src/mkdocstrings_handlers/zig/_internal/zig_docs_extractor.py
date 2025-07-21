@@ -2,7 +2,7 @@ import tree_sitter_zig
 from tree_sitter import Language, Parser
 
 
-class ZigDocsExtractor:
+class _ZigDocsExtractor:
     def __init__(self):
         ZIG_LANGUAGE = Language(tree_sitter_zig.language())
         self.parser = Parser(ZIG_LANGUAGE)

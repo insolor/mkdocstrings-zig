@@ -1,4 +1,4 @@
-from mkdocstrings_handlers.zig._internal.zig_docs_extractor import ZigDocsExtractor
+from mkdocstrings_handlers.zig._internal.zig_docs_extractor import _ZigDocsExtractor as ZigDocsExtractor
 
 
 def test_parser() -> None:

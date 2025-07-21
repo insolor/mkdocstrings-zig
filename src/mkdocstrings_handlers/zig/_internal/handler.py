@@ -10,7 +10,7 @@ from mkdocs.exceptions import PluginError
 from mkdocstrings import BaseHandler, CollectorItem, get_logger
 
 from mkdocstrings_handlers.zig._internal.config import ZigConfig, ZigOptions
-from mkdocstrings_handlers.zig._internal.zig_docs_extractor import ZigDocsExtractor
+from mkdocstrings_handlers.zig._internal.zig_docs_extractor import _ZigDocsExtractor as ZigDocsExtractor
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
