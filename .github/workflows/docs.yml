@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/docs.yml'
+      - 'README.md'
       - 'pyproject.toml'
       - 'uv.lock'
       - 'mkdocs.yml'
