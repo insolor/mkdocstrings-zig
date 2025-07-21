@@ -11,37 +11,40 @@ if TYPE_CHECKING:
 
 class _ZigDocsExtractor:
     ZIG_LANGUAGE = Language(tree_sitter_zig.language())
+    parser = Parser(ZIG_LANGUAGE)
 
-    def __init__(self):
-        self.parser = Parser(self.ZIG_LANGUAGE)
+    code: bytes
+    tree: Tree
 
-    def get_docs(self, code: str) -> dict:
-        code_bytes = code.encode("utf-8")
-        tree = self.parser.parse(code_bytes)
+    def __init__(self, code):
+        self.code = code.encode("utf-8")
+        self.tree = self.parser.parse(self.code)
+
+    def get_docs(self) -> dict:
         return {
-            "doc": "\n".join(self._get_module_docs(tree, code_bytes)),
-            "functions": self._get_functions(tree, code_bytes),
-            "constants": self._get_constants(tree, code_bytes),
-            "structs": self._get_structures(tree, code_bytes),
+            "doc": "\n".join(self._get_module_docs()),
+            "functions": self._get_functions(),
+            "constants": self._get_constants(),
+            "structs": self._get_structures(),
         }
 
-    def _get_module_docs(self, tree: Tree, code: bytes) -> list:
+    def _get_module_docs(self) -> list:
         """Extract //! module-level docs."""
         docs = []
-        root = tree.root_node
+        root = self.tree.root_node
 
         for node in root.children:
             if node.type == "comment":
-                text = self._get_node_text(node, code)
+                text = self._get_node_text(node)
                 if text.startswith("//!"):
                     docs.append(text[3:].strip())
 
         return docs
 
-    def _get_functions(self, tree: Tree, code: bytes) -> list:
+    def _get_functions(self) -> list:
         """Extract functions with /// docs."""
         functions = []
-        root = tree.root_node
+        root = self.tree.root_node
 
         for node in root.children:
             if node.type == "function_declaration":
@@ -50,15 +53,15 @@ class _ZigDocsExtractor:
                 # Get function name
                 for child in node.children:
                     if child.type == "identifier":
-                        fn_name = self._get_node_text(child, code)
+                        fn_name = self._get_node_text(child)
                         break
 
                 if fn_name:
                     functions.append(
                         {
                             "name": fn_name,
-                            "doc": self._get_doc_comments(node, code),
-                            "signature": self._get_node_text(node, code)
+                            "doc": self._get_doc_comments(node),
+                            "signature": self._get_node_text(node)
                             .split("{")[0]
                             .strip(),
                         },
@@ -66,18 +69,18 @@ class _ZigDocsExtractor:
 
         return functions
 
-    def _get_constants(self, tree: Tree, code: bytes) -> list:
+    def _get_constants(self) -> list:
         """Extract constants with /// docs."""
         constants = []
-        root = tree.root_node
+        root = self.tree.root_node
 
         for node in root.children:
             if (
                 node.type == "variable_declaration"
-                and "struct" not in self._get_node_text(node, code)
+                and "struct" not in self._get_node_text(node)
             ):
                 # Skip imports (@import or std.import-like patterns)
-                if self._is_import(node, code):
+                if self._is_import(node):
                     continue
 
                 const_name = None
@@ -85,46 +88,44 @@ class _ZigDocsExtractor:
                 # Get constant name
                 for child in node.children:
                     if child.type == "identifier":
-                        const_name = self._get_node_text(child, code)
+                        const_name = self._get_node_text(child)
                         break
 
                 if const_name:
                     constants.append(
                         {
                             "name": const_name,
-                            "doc": self._get_doc_comments(node, code),
+                            "doc": self._get_doc_comments(node),
                         },
                     )
 
         return constants
 
-    def _is_import(self, node: Node, code: bytes) -> bool:
-        node_text = self._get_node_text(node, code)
+    def _is_import(self, node: Node) -> bool:
+        node_text = self._get_node_text(node)
 
         # Common import patterns
         import_patterns = ["= @import(", ".import("]
 
         return any(pattern in node_text for pattern in import_patterns)
 
-    def _get_node_text(self, node: Node, code: bytes) -> str:
+    def _get_node_text(self, node: Node) -> str:
         """Extract source text for a node."""
-        return code[node.start_byte : node.end_byte].decode("utf-8")
+        return self.code[node.start_byte : node.end_byte].decode("utf-8")
 
-    def _get_structures(self, tree: Tree, code: bytes) -> list:
+    def _get_structures(self) -> list:
         """Extract struct definitions with documentation."""
         structures = []
-        root = tree.root_node
+        root = self.tree.root_node
 
         for node in root.children:
-            if node.type == "variable_declaration" and "struct" in self._get_node_text(
-                node, code,
-            ):
+            if node.type == "variable_declaration" and "struct" in self._get_node_text(node):
                 struct_name = None
 
                 # Extract struct name
                 for child in node.children:
                     if child.type == "identifier":
-                        struct_name = self._get_node_text(child, code)
+                        struct_name = self._get_node_text(child)
                         break
 
                 if not struct_name:
@@ -133,26 +134,26 @@ class _ZigDocsExtractor:
                 structures.append(
                     {
                         "name": struct_name,
-                        "doc": self._get_doc_comments(node, code),
-                        "fields": self._get_structure_fields(node, code),
+                        "doc": self._get_doc_comments(node),
+                        "fields": self._get_structure_fields(node),
                     },
                 )
 
         return structures
 
-    def _get_doc_comments(self, node: Node, code: bytes) -> str:
+    def _get_doc_comments(self, node: Node) -> str:
         doc_comments = []
 
         prev = node.prev_named_sibling
         while prev and prev.type == "comment":
-            text = self._get_node_text(prev, code)
+            text = self._get_node_text(prev)
             if text.startswith("///"):
                 doc_comments.insert(0, text[3:].strip())
             prev = prev.prev_named_sibling
 
         return "\n".join(doc_comments)
 
-    def _get_structure_fields(self, node: Node, code: bytes) -> list:
+    def _get_structure_fields(self, node: Node) -> list:
         # Get struct fields
         fields = []
 
@@ -168,11 +169,11 @@ class _ZigDocsExtractor:
                 field_type = ""
                 for child in field_node.children:
                     if child.type == "identifier":
-                        field_name = self._get_node_text(child, code)
+                        field_name = self._get_node_text(child)
                     elif child.type == ":":
                         continue
                     else:
-                        field_type = self._get_node_text(child, code)
+                        field_type = self._get_node_text(child)
                         break
 
                 if field_name and field_type:
@@ -180,7 +181,7 @@ class _ZigDocsExtractor:
                         {
                             "name": field_name,
                             "type": field_type,
-                            "doc": self._get_doc_comments(field_node, code),
+                            "doc": self._get_doc_comments(field_node),
                         },
                     )
 
@@ -209,8 +210,8 @@ def _main() -> None:
     };
     """
 
-    extractor = _ZigDocsExtractor()
-    print(json.dumps(extractor.get_docs(code), indent=4))  # noqa: T201
+    extractor = _ZigDocsExtractor(code)
+    print(json.dumps(extractor.get_docs(), indent=4))  # noqa: T201
 
 
 if __name__ == "__main__":

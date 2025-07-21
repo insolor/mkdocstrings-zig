@@ -30,7 +30,7 @@ def test_parser() -> None:
     }
     """
 
-    parsed = ZigDocsExtractor().get_docs(zig_code)
+    parsed = ZigDocsExtractor(zig_code).get_docs()
     assert parsed == {
         "doc": "This is module-level documentation\nIt describes the entire file",
         "functions": [
