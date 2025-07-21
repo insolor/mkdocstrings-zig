@@ -1,7 +1,7 @@
 from mkdocstrings_handlers.zig._internal.handler import ZigHandler
 
 
-def test_parser():
+def test_parser() -> None:
     zig_code = """
     //! This is module-level documentation
     //! It describes the entire file
@@ -19,7 +19,7 @@ def test_parser():
         x: i32,
         y: i32,
     };
-    
+
     /// Main function
     pub fn main() void {
         std.print("Hello, world!\n");
@@ -45,13 +45,13 @@ def test_parser():
                 "name": "PI",
                 "signature": "const PI = 3.14159;",
                 "doc": "A constant named PI.",
-            }
+            },
         ],
         "structs": [
             {
                 "name": "Point",
                 "signature": None,
                 "doc": "A 2D point struct.",
-            }
+            },
         ],
     }

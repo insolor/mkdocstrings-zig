@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from mkdocs.exceptions import PluginError
@@ -80,7 +80,7 @@ class ZigHandler(BaseHandler):
         """Collect data given an identifier and selection configuration."""
         # If identifier is a file path
         if identifier.endswith(".zig"):
-            with open(identifier, "r", encoding="utf-8") as f:
+            with open(identifier, encoding="utf-8") as f:
                 code = f.read()
         else:  # Treat as raw code
             code = identifier
@@ -102,7 +102,7 @@ class ZigHandler(BaseHandler):
         - Declaration documentation (`///`)
         - Functions (`fn`)
         - Constants (`const`)
-        - Structs (`struct`)
+        - Structs (`struct`).
         """
         lines = code.split("\n")
         parsed_data = {
@@ -152,7 +152,7 @@ class ZigHandler(BaseHandler):
                                 "name": match.group(1),
                                 "signature": line.strip("{ "),
                                 "doc": current_doc,
-                            }
+                            },
                         )
 
                 # Parse constants
@@ -166,7 +166,7 @@ class ZigHandler(BaseHandler):
                                     "name": match.group(1),
                                     "signature": line if line.endswith(";") else None,
                                     "doc": current_doc,
-                                }
+                                },
                             )
                         elif "@import" not in line:
                             # Regular constants
@@ -175,7 +175,7 @@ class ZigHandler(BaseHandler):
                                     "name": match.group(1),
                                     "signature": line,
                                     "doc": current_doc,
-                                }
+                                },
                             )
 
                 current_doc = []

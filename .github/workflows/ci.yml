@@ -46,8 +46,8 @@ jobs:
     - name: Check if the documentation builds correctly
       run: make check-docs
 
-    # - name: Check the code quality
-    #   run: make check-quality
+    - name: Check the code quality
+      run: make check-quality
 
     # - name: Check if the code is correctly typed
     #   run: make check-types

@@ -34,6 +34,8 @@ ignore = [
     "ARG005",  # Unused lambda argument
     "C901",  # Too complex
     "D105",  # Missing docstring in magic method
+    "D212",  # Multi-line docstring summary should start at the first line
+    "D205",  # 1 blank line required between summary line and description
     "D417",  # Missing argument description in the docstring
     "E501",  # Line too long
     "ERA001",  # Commented out code
@@ -42,6 +44,7 @@ ignore = [
     "PLR0912",  # Too many branches
     "PLR0913",  # Too many arguments to function call
     "PLR0915",  # Too many statements
+    "PT028",  # Test function parameter `match` has default argument
     "SLF001", # Private member accessed
     "TRY003",  # Avoid specifying long messages outside the exception class
 ]
