@@ -28,30 +28,27 @@ def test_parser() -> None:
 
     parsed = ZigHandler._parse_zig_code(zig_code)
     assert parsed == {
-        "module_docs": [
-            "This is module-level documentation",
-            "It describes the entire file",
-        ],
+        "docstring": "This is module-level documentation\nIt describes the entire file",
         "functions": [
             {
                 "name": "add",
-                "doc": "Adds two numbers.",
+                "docstring": "Adds two numbers.",
                 "signature": "fn add(a: i32, b: i32) i32",
             },
-            {"name": "main", "doc": "Main function", "signature": "pub fn main() void"},
+            {"name": "main", "docstring": "Main function", "signature": "pub fn main() void"},
         ],
         "constants": [
             {
                 "name": "PI",
                 "signature": "const PI = 3.14159;",
-                "doc": "A constant named PI.",
+                "docstring": "A constant named PI.",
             },
         ],
         "structs": [
             {
                 "name": "Point",
                 "signature": None,
-                "doc": "A 2D point struct.",
+                "docstring": "A 2D point struct.",
             },
         ],
     }
