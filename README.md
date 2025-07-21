@@ -13,6 +13,7 @@ A Zig handler for [mkdocstrings](https://mkdocstrings.github.io). Makes it possi
 ```bash
 pip install 'mkdocstrings[zig]'
 pip install mkdocs-material
+pip install typing-extensions
 ```
 
 [mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme installation is optional, but recommended for better look and feel.
