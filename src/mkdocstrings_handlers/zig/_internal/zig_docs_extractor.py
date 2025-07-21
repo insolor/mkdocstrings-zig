@@ -45,15 +45,6 @@ class _ZigDocsExtractor:
         for node in root.children:
             if node.type == "function_declaration":
                 fn_name = None
-                doc_comments = []
-
-                # Get preceding comments
-                prev = node.prev_named_sibling
-                while prev and prev.type == "comment":
-                    text = self._get_node_text(prev, code)
-                    if text.startswith("///"):
-                        doc_comments.insert(0, text[3:].strip())
-                    prev = prev.prev_named_sibling
 
                 # Get function name
                 for child in node.children:
@@ -65,7 +56,7 @@ class _ZigDocsExtractor:
                     functions.append(
                         {
                             "name": fn_name,
-                            "docstring": "\n".join(doc_comments),
+                            "docstring": self._get_doc_comments(node, code),
                             "signature": self._get_node_text(node, code)
                             .split("{")[0]
                             .strip(),
@@ -89,15 +80,6 @@ class _ZigDocsExtractor:
                     continue
 
                 const_name = None
-                doc_comments = []
-
-                # Get preceding docs
-                prev = node.prev_named_sibling
-                while prev and prev.type == "comment":
-                    text = self._get_node_text(prev, code)
-                    if text.startswith("///"):
-                        doc_comments.insert(0, text[3:].strip())
-                    prev = prev.prev_named_sibling
 
                 # Get constant name
                 for child in node.children:
@@ -109,7 +91,7 @@ class _ZigDocsExtractor:
                     constants.append(
                         {
                             "name": const_name,
-                            "docstring": "\n".join(doc_comments),
+                            "docstring": self._get_doc_comments(node, code),
                         },
                     )
 
@@ -133,17 +115,10 @@ class _ZigDocsExtractor:
         root = tree.root_node
 
         for node in root.children:
-            if node.type == "variable_declaration" and "struct" in self._get_node_text(node, code):
+            if node.type == "variable_declaration" and "struct" in self._get_node_text(
+                node, code,
+            ):
                 struct_name = None
-                doc_comments = []
-
-                # Get preceding documentation
-                prev = node.prev_named_sibling
-                while prev and prev.type == "comment":
-                    text = self._get_node_text(prev, code)
-                    if text.startswith("///"):
-                        doc_comments.insert(0, text[3:].strip())
-                    prev = prev.prev_named_sibling
 
                 # Extract struct name
                 for child in node.children:
@@ -151,32 +126,90 @@ class _ZigDocsExtractor:
                         struct_name = self._get_node_text(child, code)
                         break
 
-                if struct_name:
-                    # Get struct fields
-                    fields = []
-                    struct_body = node.child_by_field_name("value")
-                    if struct_body:
-                        for field_node in struct_body.named_children:
-                            if field_node.type == "field_declaration":
-                                field_name = ""
-                                field_type = ""
-                                for child in field_node.children:
-                                    if child.type == "identifier":
-                                        field_name = self._get_node_text(child, code)
-                                    elif child.type == "type_expression":
-                                        field_type = self._get_node_text(child, code)
+                if not struct_name:
+                    continue
 
-                                if field_name and field_type:
-                                    fields.append(
-                                        {"name": field_name, "type": field_type},
-                                    )
+                structures.append(
+                    {
+                        "name": struct_name,
+                        "docstring": self._get_doc_comments(node, code),
+                        "fields": self._get_structure_fields(node, code),
+                    },
+                )
 
-                    structures.append(
+        return structures
+
+    def _get_doc_comments(self, node: Node, code: str) -> str:
+        doc_comments = []
+
+        prev = node.prev_named_sibling
+        while prev and prev.type == "comment":
+            text = self._get_node_text(prev, code)
+            if text.startswith("///"):
+                doc_comments.insert(0, text[3:].strip())
+            prev = prev.prev_named_sibling
+
+        return "\n".join(doc_comments)
+
+    def _get_structure_fields(self, node: Node, code: str) -> list:
+        # Get struct fields
+        fields = []
+
+        for child in node.children:
+            if child.type == "struct_declaration":
+                break
+        else:
+            return []
+
+        for field_node in child.named_children:
+            if field_node.type == "container_field":
+                field_name = ""
+                field_type = ""
+                for child in field_node.children:
+                    if child.type == "identifier":
+                        field_name = self._get_node_text(child, code)
+                    elif child.type == ":":
+                        continue
+                    else:
+                        field_type = self._get_node_text(child, code)
+
+                if field_name and field_type:
+                    fields.append(
                         {
-                            "name": struct_name,
-                            "docstring": "\n".join(doc_comments),
-                            # "fields": fields,
+                            "name": field_name,
+                            "type": field_type,
+                            "docstring": self._get_doc_comments(field_node, code),
                         },
                     )
 
-        return structures
+        return fields
+
+
+def _main() -> None:
+    import json  # noqa: PLC0415
+
+    code = """
+    /// A spreadsheet position
+    pub const Pos = struct {
+        /// (0-indexed) row
+        x: u32,
+        /// (0-indexed) column
+        y: u32,
+
+        /// The top-left position
+        pub const zero: Pos = .{ .x = 0, .y = 0 };
+
+        /// Illegal position
+        pub const invalid_pos: Pos = .{
+            .x = std.math.maxInt(u32),
+            .y = std.math.maxInt(u32),
+        };
+    };
+    """
+
+    extractor = _ZigDocsExtractor()
+    print(json.dumps(extractor.get_docs(code), indent=4))  # noqa: T201
+
+
+if __name__ == "__main__":
+    _main()
