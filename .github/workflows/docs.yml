@@ -1,0 +1,33 @@
+name: Documentation
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - '.github/workflows/docs.yml'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'mkdocs.yml'
+      - 'docs/*'
+      - 'test_zig_project/*'
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Deploy docs
+        run: uv run mkdocs gh-deploy --force
