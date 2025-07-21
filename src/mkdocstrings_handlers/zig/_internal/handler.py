@@ -88,11 +88,9 @@ class ZigHandler(BaseHandler):
         # Parse Zig code
         parsed = self._parse_zig_code(code)
 
-        # Format for mkdocstrings
-        formatted = self._format_for_mkdocstrings(parsed)
-        formatted["path"] = identifier
-        formatted["name"] = identifier
-        return formatted
+        parsed["path"] = identifier
+        parsed["name"] = identifier
+        return parsed
 
     @staticmethod
     def _parse_zig_code(code: str) -> dict[str, list[dict]]:
@@ -105,12 +103,11 @@ class ZigHandler(BaseHandler):
         - Structs (`struct`).
         """
         lines = code.split("\n")
-        parsed_data = {
-            "module_docs": [],  # For //! comments
-            "functions": [],
-            "constants": [],
-            "structs": [],
-        }
+
+        module_docs = []
+        functions = []
+        constants = []
+        structs = []
 
         current_doc = []
         i = 0
@@ -121,7 +118,7 @@ class ZigHandler(BaseHandler):
             if line.startswith("//!"):
                 # Collect all consecutive module doc lines
                 while i < len(lines) and lines[i].strip().startswith("//!"):
-                    parsed_data["module_docs"].append(lines[i].strip()[3:].strip())
+                    module_docs.append(lines[i].strip()[3:].strip())
                     i += 1
                 continue
 
@@ -147,11 +144,11 @@ class ZigHandler(BaseHandler):
                 if line.startswith("fn ") or " fn " in line:
                     match = re.search(r"fn\s+([a-zA-Z0-9_]+)\s*\(", line)
                     if match:
-                        parsed_data["functions"].append(
+                        functions.append(
                             {
                                 "name": match.group(1),
                                 "signature": line.rstrip("{( "),
-                                "doc": current_doc,
+                                "docstring": current_doc,
                             },
                         )
 
@@ -161,20 +158,20 @@ class ZigHandler(BaseHandler):
                     if match:
                         if "= struct" in line:
                             # Handle structs
-                            parsed_data["structs"].append(
+                            structs.append(
                                 {
                                     "name": match.group(1),
                                     "signature": line if line.endswith(";") else None,
-                                    "doc": current_doc,
+                                    "docstring": current_doc,
                                 },
                             )
                         elif "@import" not in line:
                             # Regular constants
-                            parsed_data["constants"].append(
+                            constants.append(
                                 {
                                     "name": match.group(1),
                                     "signature": line,
-                                    "doc": current_doc,
+                                    "docstring": current_doc,
                                 },
                             )
 
@@ -183,40 +180,11 @@ class ZigHandler(BaseHandler):
 
             i += 1
 
-        return parsed_data
-
-    @staticmethod
-    def _format_for_mkdocstrings(parsed: dict) -> CollectorItem:
-        """Formats parsed data for mkdocstrings consumption."""
         return {
-            "module": {
-                "docstring": "\n".join(parsed.get("module_docs", [])),
-            },
-            "functions": [
-                {
-                    "name": func["name"],
-                    "signature": func["signature"],
-                    "docstring": func["doc"],
-                }
-                for func in parsed.get("functions", [])
-            ],
-            "constants": [
-                {
-                    "name": const["name"],
-                    "signature": const["signature"],
-                    "docstring": const["doc"],
-                    "value": const.get("value", ""),
-                }
-                for const in parsed.get("constants", [])
-            ],
-            "structs": [
-                {
-                    "name": struct["name"],
-                    "signature": struct["signature"],
-                    "docstring": struct["doc"],
-                }
-                for struct in parsed.get("structs", [])
-            ],
+            "docstring": "\n".join(module_docs),  # For //! comments
+            "functions": functions,
+            "constants": constants,
+            "structs": structs,
         }
 
     def render(self, data: CollectorItem, options: ZigOptions) -> str:

@@ -37,16 +37,6 @@ Context:
 
     {% endfilter %}
 
-    {% block signature scoped %}
-      {#- Signature block.
-
-      This block renders the signature for the data.
-      -#}
-      {% if data.signature %}
-      {{ data.signature | highlight(language="zig") }}
-      {% endif %}
-    {% endblock signature %}
-
     <div class="doc doc-contents {% if root %}first{% endif %}">
       {% block contents scoped %}
         {#- Contents block.
@@ -55,9 +45,9 @@ Context:
         It contains other blocks that users can override.
         Overriding the contents block allows to rearrange the order of the blocks.
         -#}
-        {% if data.module %}
+        {% if data.docstring %}
         <div class="docstring">
-            {{ data.module.docstring | safe }}
+            {{ data.docstring | safe }}
         </div>
         {% endif %}
         
