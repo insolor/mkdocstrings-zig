@@ -16,7 +16,7 @@ class _ZigDocsExtractor:
     code: bytes
     tree: Tree
 
-    def __init__(self, code):
+    def __init__(self, code: str):
         self.code = code.encode("utf-8")
         self.tree = self.parser.parse(self.code)
 
