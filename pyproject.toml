@@ -5,11 +5,11 @@ build-backend = "pdm.backend"
 [project]
 name = "mkdocstrings-zig"
 description = "A Zig handler for mkdocstrings."
-authors = [{name = "insolor", email = "2442833+insolor@users.noreply.github.com"}]
+authors = [{name = "insolor", email = "insolor@gmail.com"}]
 license = "ISC"
 license-files = ["LICENSE"]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = []
 dynamic = ["version"]
 classifiers = [
@@ -18,12 +18,11 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
+    # "Programming Language :: Python :: 3.14",
     "Topic :: Documentation",
     "Topic :: Software Development",
     "Topic :: Utilities",
@@ -34,14 +33,14 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://insolor.github.io/mkdocstrings-zig"
-Documentation = "https://insolor.github.io/mkdocstrings-zig"
-Changelog = "https://insolor.github.io/mkdocstrings-zig/changelog"
+# Homepage = "https://insolor.github.io/mkdocstrings-zig"
+# Documentation = "https://insolor.github.io/mkdocstrings-zig"
+# Changelog = "https://insolor.github.io/mkdocstrings-zig/changelog"
 Repository = "https://github.com/insolor/mkdocstrings-zig"
 Issues = "https://github.com/insolor/mkdocstrings-zig/issues"
 Discussions = "https://github.com/insolor/mkdocstrings-zig/discussions"
-Gitter = "https://gitter.im/mkdocstrings-zig/community"
-Funding = "https://github.com/sponsors/insolor"
+# Gitter = "https://gitter.im/mkdocstrings-zig/community"
+# Funding = "https://github.com/sponsors/insolor"
 
 [tool.pdm.version]
 source = "call"
