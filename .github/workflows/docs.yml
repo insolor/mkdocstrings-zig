@@ -29,10 +29,23 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
 
-      - name: Deploy docs
-        run: uv run mkdocs gh-deploy --force
+      - name: Build docs
+        run: uv run mkdocs build
 
-      - name: Deploy demo
+      - name: Build demo
         run: |
           cd test_zig_project
-          uv run mkdocs gh-deploy --site-dir demo
+          uv run mkdocs build
+          cd ..
+      
+      - name: Copy demo docs into deployment directory
+        run: |
+          cp -r test_zig_project/site site/demo
+
+      - name: Deploy docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          git-config-name: github-actions[bot]
+          git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
+          folder: site
+          single-commit: true
