@@ -68,11 +68,13 @@ class _ZigDocsExtractor:
                     )
 
         return functions
-    
+
     def _get_node_name(self, node: Node) -> str | None:
         for child in node.children:
             if child.type == "identifier":
                 return self._get_node_text(child)
+
+        return None
 
     def _get_constants(self) -> list:
         """Extract constants with /// docs."""
