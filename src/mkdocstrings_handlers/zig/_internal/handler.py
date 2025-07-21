@@ -150,7 +150,7 @@ class ZigHandler(BaseHandler):
                         parsed_data["functions"].append(
                             {
                                 "name": match.group(1),
-                                "signature": line.strip("{ "),
+                                "signature": line.rstrip("{( "),
                                 "doc": current_doc,
                             },
                         )
