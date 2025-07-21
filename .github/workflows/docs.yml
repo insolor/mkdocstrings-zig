@@ -31,3 +31,8 @@ jobs:
 
       - name: Deploy docs
         run: uv run mkdocs gh-deploy --force
+
+      - name: Deploy demo
+        run: |
+          cd test_zig_project
+          uv run mkdocs gh-deploy --site-dir demo
