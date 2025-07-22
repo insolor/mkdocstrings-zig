@@ -83,7 +83,7 @@ class _ZigDocsExtractor:
 
         return result
 
-    def _parse_function(self, node) -> dict | None:
+    def _parse_function(self, node: Node) -> dict | None:
         """Parse function information."""
         fn_name = None
 
@@ -136,7 +136,7 @@ class _ZigDocsExtractor:
         return "\n".join(doc_comments)
 
     def _get_struct_declaration(self, node: Node) -> Node | None:
-        """Extract struct declaration node"""
+        """Extract struct declaration node."""
         for child in node.children:
             if child.type == "struct_declaration":
                 return child
@@ -144,7 +144,7 @@ class _ZigDocsExtractor:
         return None
 
     def _parse_field(self, node: Node) -> dict | None:
-        """Parse structure field node"""
+        """Parse structure field node."""
         field_name = None
         field_type = None
         for child in node.children:
@@ -171,7 +171,7 @@ def _main() -> None:
 
     code = """
     //! Module docs
-    
+
     const std = @import("std");
 
     fn notDocumented() void {
