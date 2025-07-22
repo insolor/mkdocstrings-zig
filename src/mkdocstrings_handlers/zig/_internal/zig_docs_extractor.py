@@ -57,15 +57,18 @@ class _ZigDocsExtractor:
                         {
                             "name": fn_name,
                             "doc": doc_comment,
-                            "signature": self._get_node_text(node)
-                            .split("{")[0]
-                            .strip(),
+                            "signature": self._get_function_signature(node),
                         },
                     )
 
         return functions
+    
+    def _get_function_signature(self, node: Node) -> str:
+        """Extract signature of the function."""
+        return self._get_node_text(node).split("{")[0].strip()
 
     def _get_node_name(self, node: Node) -> str | None:
+        """Get node identifier as it's name."""
         for child in node.children:
             if child.type in ("identifier", "builtin_identifier"):
                 return self._get_node_text(child)
@@ -97,6 +100,7 @@ class _ZigDocsExtractor:
         return constants
 
     def _is_import(self, node: Node) -> bool:
+        """Check if the given constant is an import."""
         for child in node.children:
             if child.type == "builtin_function" and self._get_node_name(child) == "@import":
                 return True
@@ -129,6 +133,7 @@ class _ZigDocsExtractor:
         return structures
 
     def _get_doc_comments(self, node: Node) -> str:
+        """Extract preceding doc comments."""
         doc_comments = []
 
         prev = node.prev_named_sibling
@@ -141,6 +146,7 @@ class _ZigDocsExtractor:
         return "\n".join(doc_comments)
 
     def _get_structure_fields(self, node: Node) -> list:
+        """Extract structure fields."""
         fields = []
 
         for child in node.children:
