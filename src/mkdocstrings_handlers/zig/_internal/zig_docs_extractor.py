@@ -62,7 +62,7 @@ class _ZigDocsExtractor:
                     )
 
         return functions
-    
+
     def _get_function_signature(self, node: Node) -> str:
         """Extract signature of the function."""
         return self._get_node_text(node).split("{")[0].strip()
