@@ -106,11 +106,7 @@ class _ZigDocsExtractor:
 
     def _is_struct(self, node: Node) -> bool:
         """Check if the given constant is a structure."""
-        for child in node.children:
-            if child.type == "struct_declaration":
-                return True
-
-        return False
+        return any(child.type == "struct_declaration" for child in node.children)
 
     def _get_node_text(self, node: Node) -> str:
         """Extract source text for a node."""
