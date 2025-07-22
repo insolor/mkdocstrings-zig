@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
+import markdown
 from mkdocs.exceptions import PluginError
 from mkdocstrings import BaseHandler, CollectorItem, get_logger
 
@@ -126,6 +127,7 @@ class ZigHandler(BaseHandler):
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
         self.env.keep_trailing_newline = False
+        self.env.filters["markdown"] = lambda text: markdown.markdown(text)
 
     # You can also implement the `get_inventory_urls` and `load_inventory` methods
     # if you want to support loading object inventories.

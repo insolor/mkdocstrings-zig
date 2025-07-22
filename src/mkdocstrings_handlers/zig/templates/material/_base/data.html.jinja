@@ -47,7 +47,7 @@ Context:
         -#}
         {% if data.doc %}
         <div class="docstring">
-            {{ data.doc | safe }}
+            {{ data.doc | markdown | safe }}
         </div>
         {% endif %}
         
@@ -61,7 +61,7 @@ Context:
             {# <h3>{{ constant.name }}</h3> #}
             {% if constant.doc %}
             <div class="docstring">
-              {{ constant.doc | safe }}
+              {{ constant.doc | markdown | safe }}
             </div>
             {% endif %}
           </div>
@@ -78,14 +78,14 @@ Context:
             {% endif %}
             {% if struct.doc %}
             <div class="docstring">
-              {{ struct.doc | safe }}
+              {{ struct.doc | markdown | safe }}
             </div>
             {% endif %}
             {% if struct.fields %}
             <ul>
             {% for field in struct.fields %}
             <li><code>{{ field.name }}: {{ field.type }}</code>
-            {% if field.doc %} - {{field.doc}}{% endif %}</li>
+            {% if field.doc %} - {{ field.doc }}{% endif %}</li>
             {% endfor %}
             </ul>
             {% endif %}
@@ -101,7 +101,7 @@ Context:
             {{ func.signature | highlight(language="zig") }}
             {% if func.doc %}
             <div class="docstring">
-              {{ func.doc | safe }}
+              {{ func.doc | markdown | safe }}
             </div>
             {% endif %}
           </div>
