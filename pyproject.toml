@@ -36,7 +36,7 @@ dependencies = [
 
 [project.urls]
 # Homepage = "https://insolor.github.io/mkdocstrings-zig"
-# Documentation = "https://insolor.github.io/mkdocstrings-zig"
+Documentation = "https://insolor.github.io/mkdocstrings-zig"
 # Changelog = "https://insolor.github.io/mkdocstrings-zig/changelog"
 Repository = "https://github.com/insolor/mkdocstrings-zig"
 Issues = "https://github.com/insolor/mkdocstrings-zig/issues"
