@@ -24,6 +24,9 @@ def test_parser() -> None:
         x: i32,
         /// vertical coorinate
         y: i32,
+        
+        /// The top-left position
+        pub const zero: Point = .{ .x = 0, .y = 0 };
     };
 
     /// Main function
@@ -67,6 +70,12 @@ def test_parser() -> None:
                         "doc": "vertical coorinate",
                         "name": "y",
                         "type": "i32",
+                    },
+                ],
+                "constants": [
+                    {
+                        "doc": "The top-left position",
+                        "name": "zero",
                     },
                 ],
             },

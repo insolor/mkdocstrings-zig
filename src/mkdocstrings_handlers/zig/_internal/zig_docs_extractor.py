@@ -21,47 +21,82 @@ class _ZigDocsExtractor:
         self.tree = self.parser.parse(self.code)
 
     def get_docs(self) -> dict:
-        return {
-            "doc": "\n".join(self._get_module_docs()),
-            "functions": self._get_functions(),
-            "constants": self._get_constants(),
-            "structs": self._get_structures(),
-        }
+        return self._parse_structure(self.tree.root_node)
 
-    def _get_module_docs(self) -> list:
-        """Extract //! module-level docs."""
-        docs = []
-        root = self.tree.root_node
-
-        for node in root.children:
-            if node.type == "comment":
-                text = self._get_node_text(node)
-                if text.startswith("//!"):
-                    docs.append(text[3:].strip())
-
-        return docs
-
-    def _get_functions(self) -> list:
-        """Extract functions with /// docs."""
+    def _parse_structure(self, node: Node) -> dict:
+        """Parse structure docs. A module is a structure too."""
+        module_doc = []
+        fields = []
         functions = []
-        root = self.tree.root_node
+        constants = []
+        structs = []
 
-        for node in root.children:
-            if node.type == "function_declaration":
-                fn_name = None
+        for child in node.children:
+            if child.type == "comment":
+                text = self._get_node_text(child)
+                if text.startswith("//!"):
+                    module_doc.append(text[3:].strip())
+            if child.type == "container_field":
+                field = self._parse_field(child)
+                if field:
+                    fields.append(field)
+            elif child.type == "function_declaration":
+                function = self._parse_function(child)
+                if function:
+                    functions.append(function)
+            elif child.type == "variable_declaration":
+                if self._is_import(child):
+                    continue
 
-                fn_name = self._get_node_name(node)
-                doc_comment = self._get_doc_comments(node)
-                if fn_name and doc_comment:
-                    functions.append(
+                name = self._get_node_name(child)
+                if not name:
+                    continue
+
+                doc = self._get_doc_comments(child)
+                struct_node = self._get_struct_declaration(child)
+                if struct_node:
+                    structs.append(
                         {
-                            "name": fn_name,
-                            "doc": doc_comment,
-                            "signature": self._get_function_signature(node),
+                            "name": name,
+                            "doc": doc,
+                            **self._parse_structure(struct_node),
                         },
                     )
+                elif doc:
+                    constants.append({"name": name, "doc": doc})
+        
+        result = {}
+        if module_doc:
+            result["doc"] = "\n".join(module_doc)
+        
+        if fields:
+            result["fields"] = fields
 
-        return functions
+        if functions:
+            result["functions"] = functions
+
+        if constants:
+            result["constants"] = constants
+
+        if structs:
+            result["structs"] = structs
+
+        return result
+
+    def _parse_function(self, node) -> dict | None:
+        """Parse function information."""
+        fn_name = None
+
+        fn_name = self._get_node_name(node)
+        doc_comment = self._get_doc_comments(node)
+        if fn_name and doc_comment:
+            return {
+                "name": fn_name,
+                "doc": doc_comment,
+                "signature": self._get_function_signature(node),
+            }
+        
+        return None
 
     def _get_function_signature(self, node: Node) -> str:
         """Extract signature of the function."""
@@ -75,23 +110,6 @@ class _ZigDocsExtractor:
 
         return None
 
-    def _get_constants(self) -> list:
-        """Extract constants with /// docs."""
-        constants = []
-        root = self.tree.root_node
-
-        for node in root.children:
-            if node.type == "variable_declaration":
-                if self._is_import(node) or self._is_struct(node):
-                    continue
-
-                const_name = self._get_node_name(node)
-                doc = self._get_doc_comments(node)
-                if const_name and doc:
-                    constants.append({"name": const_name, "doc": doc})
-
-        return constants
-
     def _is_import(self, node: Node) -> bool:
         """Check if the given constant is an import."""
         for child in node.children:
@@ -100,34 +118,9 @@ class _ZigDocsExtractor:
 
         return False
 
-    def _is_struct(self, node: Node) -> bool:
-        """Check if the given constant is a structure."""
-        return any(child.type == "struct_declaration" for child in node.children)
-
     def _get_node_text(self, node: Node) -> str:
         """Extract source text for a node."""
         return self.code[node.start_byte : node.end_byte].decode("utf-8")
-
-    def _get_structures(self) -> list:
-        """Extract struct definitions with documentation."""
-        structures = []
-        root = self.tree.root_node
-
-        for node in root.children:
-            if node.type == "variable_declaration" and self._is_struct(node):
-                struct_name = self._get_node_name(node)
-                if not struct_name:
-                    continue
-
-                structures.append(
-                    {
-                        "name": struct_name,
-                        "doc": self._get_doc_comments(node),
-                        "fields": self._get_structure_fields(node),
-                    },
-                )
-
-        return structures
 
     def _get_doc_comments(self, node: Node) -> str:
         """Extract preceding doc comments."""
@@ -141,46 +134,44 @@ class _ZigDocsExtractor:
             prev = prev.prev_named_sibling
 
         return "\n".join(doc_comments)
-
-    def _get_structure_fields(self, node: Node) -> list:
-        """Extract structure fields."""
-        fields = []
-
+    
+    def _get_struct_declaration(self, node: Node) -> Node | None:
+        """Extract struct declaration node"""
         for child in node.children:
             if child.type == "struct_declaration":
+                return child
+        
+        return None
+
+    def _parse_field(self, node: Node) -> dict | None:
+        """Parse structure field node"""
+        field_name = None
+        field_type = None
+        for child in node.children:
+            if child.type == "identifier":
+                field_name = self._get_node_text(child)
+            elif child.type == ":":
+                continue
+            else:
+                field_type = self._get_node_text(child)
                 break
-        else:
-            return []
 
-        for field_node in child.named_children:
-            if field_node.type == "container_field":
-                field_name = ""
-                field_type = ""
-                for child in field_node.children:
-                    if child.type == "identifier":
-                        field_name = self._get_node_text(child)
-                    elif child.type == ":":
-                        continue
-                    else:
-                        field_type = self._get_node_text(child)
-                        break
-
-                if field_name and field_type:
-                    fields.append(
-                        {
-                            "name": field_name,
-                            "type": field_type,
-                            "doc": self._get_doc_comments(field_node),
-                        },
-                    )
-
-        return fields
+        if field_name and field_type:
+            return {
+                "name": field_name,
+                "type": field_type,
+                "doc": self._get_doc_comments(node),
+            }
+        
+        return None
 
 
 def _main() -> None:
     import json  # noqa: PLC0415
 
     code = """
+    //! Module docs
+    
     const std = @import("std");
 
     fn notDocumented() void {
