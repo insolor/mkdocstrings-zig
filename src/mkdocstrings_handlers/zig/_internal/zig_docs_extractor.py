@@ -81,10 +81,7 @@ class _ZigDocsExtractor:
         root = self.tree.root_node
 
         for node in root.children:
-            if (
-                node.type == "variable_declaration"
-                and "struct" not in self._get_node_text(node)
-            ):
+            if node.type == "variable_declaration" and self._is_struct(node):
                 if self._is_import(node):
                     continue
 
@@ -107,6 +104,14 @@ class _ZigDocsExtractor:
 
         return False
 
+    def _is_struct(self, node: Node) -> bool:
+        """Check if the given constant is a structure."""
+        for child in node.children:
+            if child.type == "struct_declaration":
+                return True
+
+        return False
+
     def _get_node_text(self, node: Node) -> str:
         """Extract source text for a node."""
         return self.code[node.start_byte : node.end_byte].decode("utf-8")
@@ -117,7 +122,7 @@ class _ZigDocsExtractor:
         root = self.tree.root_node
 
         for node in root.children:
-            if node.type == "variable_declaration" and "struct" in self._get_node_text(node):
+            if node.type == "variable_declaration" and self._is_struct(node):
                 struct_name = self._get_node_name(node)
                 if not struct_name:
                     continue
