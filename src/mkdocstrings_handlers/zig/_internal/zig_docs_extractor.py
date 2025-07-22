@@ -81,8 +81,8 @@ class _ZigDocsExtractor:
         root = self.tree.root_node
 
         for node in root.children:
-            if node.type == "variable_declaration" and not self._is_struct(node):
-                if self._is_import(node):
+            if node.type == "variable_declaration":
+                if self._is_import(node) or self._is_struct(node):
                     continue
 
                 const_name = self._get_node_name(node)
