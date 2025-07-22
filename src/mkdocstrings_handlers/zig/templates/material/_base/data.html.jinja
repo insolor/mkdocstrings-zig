@@ -81,6 +81,14 @@ Context:
               {{ struct.doc | safe }}
             </div>
             {% endif %}
+            {% if struct.fields %}
+            <ul>
+            {% for field in struct.fields %}
+            <li><code>{{ field.name }}: {{ field.type }}</code>
+            {% if field.doc %} - {{field.doc}}{% endif %}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
           </div>
           {% endfor %}
         {% endif %}

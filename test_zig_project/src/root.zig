@@ -15,7 +15,9 @@ test "basic add functionality" {
 
 /// Point structure
 const Point = struct {
+    /// Horizontal coordinate
     x: u32,
+    /// Vertical coordinate
     y: u32,
 };
 
