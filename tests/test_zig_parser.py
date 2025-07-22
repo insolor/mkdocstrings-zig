@@ -7,6 +7,8 @@ def test_parser() -> None:
     zig_code = """
     //! This is module-level documentation
     //! It describes the entire file
+    const std = @import("std");
+    const AutoHashMap = std.AutoHashMap;
 
     /// Adds two numbers.
     fn add(a: i32, b: i32) i32 {
