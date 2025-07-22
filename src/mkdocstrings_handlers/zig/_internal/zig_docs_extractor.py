@@ -64,11 +64,11 @@ class _ZigDocsExtractor:
                     )
                 elif doc:
                     constants.append({"name": name, "doc": doc})
-        
+
         result = {}
         if module_doc:
             result["doc"] = "\n".join(module_doc)
-        
+
         if fields:
             result["fields"] = fields
 
@@ -95,7 +95,7 @@ class _ZigDocsExtractor:
                 "doc": doc_comment,
                 "signature": self._get_function_signature(node),
             }
-        
+
         return None
 
     def _get_function_signature(self, node: Node) -> str:
@@ -134,13 +134,13 @@ class _ZigDocsExtractor:
             prev = prev.prev_named_sibling
 
         return "\n".join(doc_comments)
-    
+
     def _get_struct_declaration(self, node: Node) -> Node | None:
         """Extract struct declaration node"""
         for child in node.children:
             if child.type == "struct_declaration":
                 return child
-        
+
         return None
 
     def _parse_field(self, node: Node) -> dict | None:
@@ -162,7 +162,7 @@ class _ZigDocsExtractor:
                 "type": field_type,
                 "doc": self._get_doc_comments(node),
             }
-        
+
         return None
 
 
