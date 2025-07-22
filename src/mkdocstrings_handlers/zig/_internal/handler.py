@@ -127,7 +127,7 @@ class ZigHandler(BaseHandler):
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
         self.env.keep_trailing_newline = False
-        self.env.filters["markdown"] = lambda text: markdown.markdown(text)
+        self.env.filters["markdown"] = markdown.markdown
 
     # You can also implement the `get_inventory_urls` and `load_inventory` methods
     # if you want to support loading object inventories.
