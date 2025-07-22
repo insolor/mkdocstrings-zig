@@ -86,13 +86,9 @@ class _ZigDocsExtractor:
                     continue
 
                 const_name = self._get_node_name(node)
-                if const_name:
-                    constants.append(
-                        {
-                            "name": const_name,
-                            "doc": self._get_doc_comments(node),
-                        },
-                    )
+                doc = self._get_doc_comments(node)
+                if const_name and doc:
+                    constants.append({"name": const_name, "doc": doc})
 
         return constants
 
