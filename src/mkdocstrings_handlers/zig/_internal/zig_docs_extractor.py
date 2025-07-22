@@ -50,17 +50,13 @@ class _ZigDocsExtractor:
             if node.type == "function_declaration":
                 fn_name = None
 
-                # Get function name
-                for child in node.children:
-                    if child.type == "identifier":
-                        fn_name = self._get_node_text(child)
-                        break
-
-                if fn_name:
+                fn_name = self._get_node_name(node)
+                doc_comment = self._get_doc_comments(node)
+                if fn_name and doc_comment:
                     functions.append(
                         {
                             "name": fn_name,
-                            "doc": self._get_doc_comments(node),
+                            "doc": doc_comment,
                             "signature": self._get_node_text(node)
                             .split("{")[0]
                             .strip(),
@@ -183,6 +179,9 @@ def _main() -> None:
 
     code = """
     const std = @import("std");
+
+    fn notDocumented() void {
+    }
 
     /// A spreadsheet position
     pub const Pos = struct {
