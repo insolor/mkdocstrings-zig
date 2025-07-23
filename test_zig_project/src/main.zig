@@ -19,6 +19,9 @@ pub fn main() !void {
     try bw.flush(); // Don't forget to flush!
 }
 
+/// A constant named PI.
+const PI = 3.14159;
+
 test "simple test" {
     var list = std.ArrayList(i32).init(std.testing.allocator);
     defer list.deinit(); // Try commenting this out and see if zig detects the memory leak!

@@ -38,11 +38,13 @@ class _ZigDocsExtractor:
                 field = self._parse_field(child)
                 if field:
                     if not fields:
-                        children.append({
-                            "node_type": "fields",
-                            "children": fields,
-                        })
-                    
+                        children.append(
+                            {
+                                "node_type": "fields",
+                                "children": fields,
+                            }
+                        )
+
                     fields.append(field)
             elif child.type == "function_declaration":
                 function = self._parse_function(child)
@@ -62,16 +64,20 @@ class _ZigDocsExtractor:
                     children.append(
                         {
                             "node_type": "struct",
+                            "short_signature": self._get_short_struct_signature(child),
                             "name": name,
                             "doc": doc,
                             **self._parse_structure(struct_node),
                         },
                     )
                 elif doc:
-                    children.append({
-                        "node_type": "const",
-                        "name": name,
-                        "doc": doc,}
+                    children.append(
+                        {
+                            "node_type": "const",
+                            "short_signature": self._get_short_const_signature(child),
+                            "name": name,
+                            "doc": doc,
+                        }
                     )
 
         result = {}
@@ -85,8 +91,6 @@ class _ZigDocsExtractor:
 
     def _parse_function(self, node: Node) -> dict | None:
         """Parse function information."""
-        fn_name = None
-
         fn_name = self._get_node_name(node)
         doc_comment = self._get_doc_comments(node)
         if fn_name and doc_comment:
@@ -95,6 +99,7 @@ class _ZigDocsExtractor:
                 "name": fn_name,
                 "doc": doc_comment,
                 "signature": self._get_function_signature(node),
+                "short_signature": self._get_short_function_signature(node),
             }
 
         return None
@@ -102,6 +107,10 @@ class _ZigDocsExtractor:
     def _get_function_signature(self, node: Node) -> str:
         """Extract signature of the function."""
         return self._get_node_text(node).split("{")[0].strip()
+
+    def _get_short_function_signature(self, node: Node) -> str:
+        """Extract short function signature"""
+        return self._get_node_text(node).split("(")[0].strip()
 
     def _get_node_name(self, node: Node) -> str | None:
         """Get node identifier as it's name."""
@@ -114,7 +123,10 @@ class _ZigDocsExtractor:
     def _is_import(self, node: Node) -> bool:
         """Check if the given constant is an import."""
         for child in node.children:
-            if child.type == "builtin_function" and self._get_node_name(child) == "@import":
+            if (
+                child.type == "builtin_function"
+                and self._get_node_name(child) == "@import"
+            ):
                 return True
 
         return False
@@ -143,6 +155,12 @@ class _ZigDocsExtractor:
                 return child
 
         return None
+
+    def _get_short_const_signature(self, node: Node) -> str:
+        return self._get_node_text(node).split("=")[0].strip()
+
+    def _get_short_struct_signature(self, node: Node) -> str:
+        return "struct".join(self._get_short_const_signature(node).split("const"))
 
     def _parse_field(self, node: Node) -> dict | None:
         """Parse structure field node."""
