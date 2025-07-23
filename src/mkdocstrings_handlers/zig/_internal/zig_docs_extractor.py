@@ -42,7 +42,7 @@ class _ZigDocsExtractor:
                             {
                                 "node_type": "fields",
                                 "children": fields,
-                            }
+                            },
                         )
 
                     fields.append(field)
@@ -77,7 +77,7 @@ class _ZigDocsExtractor:
                             "short_signature": self._get_short_const_signature(child),
                             "name": name,
                             "doc": doc,
-                        }
+                        },
                     )
 
         result = {}
