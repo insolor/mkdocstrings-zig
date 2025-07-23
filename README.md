@@ -47,7 +47,7 @@ plugins:
 ::: src/root.zig
 ```
 
-In the future it's planned to add a possibility to specify just a parent directory, like that:
+Or add documentation for a directory:
 
 ```markdown
 ::: src

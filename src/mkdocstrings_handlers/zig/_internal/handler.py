@@ -79,19 +79,24 @@ class ZigHandler(BaseHandler):
 
     def collect(self, identifier: str, options: ZigOptions) -> CollectorItem:  # noqa: ARG002
         """Collect data given an identifier and selection configuration."""
-        # If identifier is a file path
-        if identifier.endswith(".zig"):
-            with open(identifier, encoding="utf-8") as f:
-                code = f.read()
-        else:  # Treat as raw code
-            code = identifier
+        
+        path = Path(identifier)
+        if path.is_dir():
+            modules = []
+            for p in sorted(path.rglob("*.zig")):
+                code = p.read_text(encoding="utf-8")
+                parsed = ZigDocsExtractor(code).get_docs()
+                parsed["path"] = str(p)
+                parsed["name"] = str(p)
+                modules.append(parsed)
+        else:
+            code = path.read_text(encoding="utf-8")
+            parsed = ZigDocsExtractor(code).get_docs()
+            parsed["path"] = str(path)
+            parsed["name"] = str(path)
+            modules = [parsed]
 
-        # Parse Zig code
-        parsed = ZigDocsExtractor(code).get_docs()
-
-        parsed["path"] = identifier
-        parsed["name"] = identifier
-        return parsed
+        return modules
 
     def render(self, data: CollectorItem, options: ZigOptions) -> str:
         """Render a template using provided data and configuration options."""
