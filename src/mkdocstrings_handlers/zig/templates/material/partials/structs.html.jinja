@@ -1,0 +1,40 @@
+{% if data.structs %}
+<section class="structs-section">
+  <h2>Structures</h2>
+  {% for struct in data.structs %}
+    <div class="struct" id="struct-{{ struct.name }}">
+      <h3>{{ struct.name }}</h3>
+      {% if struct.signature %}
+        {{ struct.signature | highlight(language="zig") }}
+      {% endif %}
+      
+      {% if struct.doc %}
+        <div class="docstring">
+          {{ struct.doc | markdown | safe }}
+        </div>
+      {% endif %}
+      
+      {% if struct.fields %}
+        <table class="struct-fields">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for field in struct.fields %}
+              <tr>
+                <td><code>{{ field.name }}</code></td>
+                <td><code>{{ field.type }}</code></td>
+                <td>{{ field.doc | default("") | markdown | safe }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+  {% endfor %}
+</section>
+{% endif %}

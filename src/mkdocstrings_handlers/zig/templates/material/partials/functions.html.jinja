@@ -1,0 +1,28 @@
+{% if data.functions %}
+<section class="functions-section">
+  <h2>Functions</h2>
+  {% for func in data.functions %}
+    <div class="function" id="fn-{{ func.name }}">
+      <h3>{{ func.name }}</h3>
+      {{ func.signature | highlight(language="zig") }}
+      
+      {% if func.doc %}
+        <div class="docstring">
+          {{ func.doc | markdown | safe }}
+        </div>
+      {% endif %}
+      
+      {% if func.parameters %}
+        <h4>Parameters</h4>
+        <ul>
+          {% for param in func.parameters %}
+            <li>
+              <code>{{ param.name }}</code>: {{ param.doc | markdown | safe }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endfor %}
+</section>
+{% endif %}
