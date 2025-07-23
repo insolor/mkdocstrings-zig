@@ -1,11 +1,11 @@
 {% if data.doc %}
-<div class="docstring">
-  {{ data.doc | markdown | safe }}
-  {% if data.deprecated %}
-    <div class="admonition warning">
-      <p class="admonition-title">Deprecated</p>
-      {{ data.deprecated | markdown | safe }}
-    </div>
-  {% endif %}
-</div>
+  <div class="docstring">
+    {{ data.doc | markdown | safe }}
+    {% if data.deprecated %}
+      <div class="admonition warning">
+        <p class="admonition-title">Deprecated</p>
+        {{ data.deprecated | markdown | safe }}
+      </div>
+    {% endif %}
+  </div>
 {% endif %}

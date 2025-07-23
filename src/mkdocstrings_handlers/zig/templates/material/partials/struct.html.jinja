@@ -1,16 +1,22 @@
-<div class="struct" id="struct-{{ struct.name }}">
-  {% filter heading(heading_level, id=html_id ~ struct.name) %}{{ struct.name }}{% endfilter %}
-  
-  {% if struct.doc %}
-  <div class="docstring">
-    {% with heading_level=heading_level + 1 %}
-      {{ struct.doc | markdown | safe }}
-    {% endwith %}
+{% if parent.node_type == "struct" %}
+  <div class="struct" id="struct-{{ parent.name }}">
+    {% filter heading(heading_level, id=html_id ~ parent.name) %}{{ parent.short_signature }}{% endfilter %}
+    
+    {% if parent.doc %}
+    <div class="docstring">
+      {% with heading_level=heading_level + 1 %}
+        {{ parent.doc | markdown | safe }}
+      {% endwith %}
+    </div>
+    {% endif %}
+    
+    {% for child in parent.children %}
+      {% with parent = child, heading_level = heading_level + 1 %}
+        {% include "partials/fields.html.jinja" %}
+        {% include "partials/constant.html.jinja" %}
+        {% include "partials/struct.html.jinja" %}
+        {% include "partials/function.html.jinja" %}
+      {% endwith %}
+    {% endfor %}
   </div>
-  {% endif %}
-  
-  {% with heading_level=heading_level + 1 %}
-    {% include "partials/fields.html.jinja" %}
-    {% include "partials/methods.html.jinja" %}
-  {% endwith %}
-</div>
+{% endif%}

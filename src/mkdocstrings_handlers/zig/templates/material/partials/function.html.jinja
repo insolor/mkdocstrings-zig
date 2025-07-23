@@ -1,16 +1,18 @@
-<div class="func">
-  {% filter heading(heading_level, id=html_id ~ func.name) %}{{ func.name }}{% endfilter %}
-  {% if func.signature %}
-  <div class="signature">
-    {{ func.signature | highlight(language="zig") }}
+{% if parent.node_type == "function" %}
+  <div class="func">
+    {% filter heading(heading_level, id=html_id ~ parent.name) %}{{ parent.short_signature }}{% endfilter %}
+    {% if parent.signature %}
+    <div class="signature">
+      {{ parent.signature | highlight(language="zig") }}
+    </div>
+    {% endif %}
+    
+    {% if parent.doc %}
+    <div class="docstring">
+      {{ parent.doc | markdown | safe }}
+    </div>
+    {% endif %}
+    
+    {% include "partials/parameters.html.jinja" %}
   </div>
-  {% endif %}
-  
-  {% if func.doc %}
-  <div class="docstring">
-    {{ func.doc | markdown | safe }}
-  </div>
-  {% endif %}
-  
-  {% include "partials/parameters.html.jinja" %}
-</div>
+{% endif %}

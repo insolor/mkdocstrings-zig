@@ -12,7 +12,7 @@ def test_parser() -> None:
 
     /// Adds two numbers.
     fn add(a: i32, b: i32) i32 {
-        return a + b;
+        return a  b;
     }
 
     /// A constant named PI.
@@ -38,46 +38,55 @@ def test_parser() -> None:
     parsed = ZigDocsExtractor(zig_code).get_docs()
     assert parsed == {
         "doc": "This is module-level documentation\nIt describes the entire file",
-        "functions": [
+        "children": [
             {
-                "name": "add",
+                "node_type": "function",
                 "doc": "Adds two numbers.",
+                "name": "add",
                 "signature": "fn add(a: i32, b: i32) i32",
+                "short_signature": "fn add",
             },
             {
+                "node_type": "const",
+                "doc": "A constant named PI.",
+                "name": "PI",
+                "short_signature": "const PI",
+            },
+            {
+                "node_type": "struct",
+                "name": "Point",
+                "short_signature": "struct Point",
+                "doc": "A 2D point struct.",
+                "children": [
+                    {
+                        "node_type": "fields",
+                        "children": [
+                            {
+                                "doc": "horizontal coordinate",
+                                "name": "x",
+                                "type": "i32",
+                            },
+                            {
+                                "doc": "vertical coorinate",
+                                "name": "y",
+                                "type": "i32",
+                            },
+                        ],
+                    },
+                    {
+                        "node_type": "const",
+                        "name": "zero",
+                        "doc": "The top-left position",
+                        "short_signature": "pub const zero: Point",
+                    },
+                ],
+            },
+            {
+                "node_type": "function",
                 "name": "main",
                 "doc": "Main function",
                 "signature": "pub fn main() void",
-            },
-        ],
-        "constants": [
-            {
-                "name": "PI",
-                "doc": "A constant named PI.",
-            },
-        ],
-        "structs": [
-            {
-                "name": "Point",
-                "doc": "A 2D point struct.",
-                "fields": [
-                    {
-                        "doc": "horizontal coordinate",
-                        "name": "x",
-                        "type": "i32",
-                    },
-                    {
-                        "doc": "vertical coorinate",
-                        "name": "y",
-                        "type": "i32",
-                    },
-                ],
-                "constants": [
-                    {
-                        "doc": "The top-left position",
-                        "name": "zero",
-                    },
-                ],
+                "short_signature": "pub fn main",
             },
         ],
     }
