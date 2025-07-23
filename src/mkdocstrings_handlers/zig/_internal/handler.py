@@ -83,19 +83,19 @@ class ZigHandler(BaseHandler):
         if path.is_dir():
             modules = []
             for p in sorted(path.rglob("*.zig")):
-                code = p.read_text(encoding="utf-8")
-                parsed = ZigDocsExtractor(code).get_docs()
-                parsed["path"] = str(p)
-                parsed["name"] = str(p)
-                modules.append(parsed)
+                modules.append(self._parse_module(p))
         else:
-            code = path.read_text(encoding="utf-8")
-            parsed = ZigDocsExtractor(code).get_docs()
-            parsed["path"] = str(path)
-            parsed["name"] = str(path)
-            modules = [parsed]
+            modules = [self._parse_module(path)]
 
         return modules
+
+    @staticmethod
+    def _parse_module(path: Path) -> dict:
+        code = path.read_text(encoding="utf-8")
+        parsed = ZigDocsExtractor(code).get_docs()
+        parsed["path"] = str(path)
+        parsed["name"] = str(path)
+        return parsed
 
     def render(self, data: CollectorItem, options: ZigOptions) -> str:
         """Render a template using provided data and configuration options."""
