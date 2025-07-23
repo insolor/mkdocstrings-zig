@@ -3,7 +3,6 @@
   <h2>Functions</h2>
   {% for func in data.functions %}
     <div class="function" id="fn-{{ func.name }}">
-      <h3>{{ func.name }}</h3>
       {{ func.signature | highlight(language="zig") }}
       
       {% if func.doc %}
