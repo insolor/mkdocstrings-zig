@@ -44,15 +44,18 @@ def test_parser() -> None:
                 "doc": "Adds two numbers.",
                 "name": "add",
                 "signature": "fn add(a: i32, b: i32) i32",
+                "short_signature": "fn add",
             },
             {
                 "node_type": "const",
                 "doc": "A constant named PI.",
                 "name": "PI",
+                "short_signature": "const PI",
             },
             {
                 "node_type": "struct",
                 "name": "Point",
+                "short_signature": "struct Point",
                 "doc": "A 2D point struct.",
                 "children": [
                     {
@@ -74,6 +77,7 @@ def test_parser() -> None:
                         "node_type": "const",
                         "name": "zero",
                         "doc": "The top-left position",
+                        "short_signature": "pub const zero: Point",
                     },
                 ],
             },
@@ -82,6 +86,7 @@ def test_parser() -> None:
                 "name": "main",
                 "doc": "Main function",
                 "signature": "pub fn main() void",
+                "short_signature": "pub fn main",
             },
         ],
     }
