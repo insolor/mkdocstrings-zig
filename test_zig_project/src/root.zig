@@ -19,6 +19,11 @@ const Point = struct {
     x: u32,
     /// Vertical coordinate
     y: u32,
+
+    /// Some function
+    pub fn someFunc(a: i32) void {
+        _ = a;
+    }
 };
 
 /// 3d vector structure

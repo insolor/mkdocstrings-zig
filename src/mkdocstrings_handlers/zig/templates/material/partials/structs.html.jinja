@@ -1,0 +1,10 @@
+{% if data.structs %}
+<section class="structs-section">
+  {% filter heading(heading_level, id=html_id ~ "-structures") %}Structures{% endfilter %}
+  {% with heading_level = heading_level + 1 %}
+  {% for struct in data.structs %}
+    {% include "partials/struct.html.jinja" %}
+  {% endfor %}
+  {% endwith %}
+</section>
+{% endif %}

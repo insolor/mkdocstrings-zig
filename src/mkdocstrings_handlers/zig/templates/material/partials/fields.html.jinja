@@ -1,0 +1,20 @@
+{% if struct.fields %}
+<div class="table-container">
+  <table class="struct-fields">
+    <thead>
+      <tr>
+        <th class="field-name">Field</th>
+        <th class="field-desc">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for field in struct.fields %}
+      <tr>
+        <td class="field-name"><code>{{ field.name }}: {{ field.type }}</code></td>
+        <td class="field-desc">{{ field.doc | default("") | markdown | safe }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}

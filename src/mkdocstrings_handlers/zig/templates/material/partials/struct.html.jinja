@@ -1,0 +1,16 @@
+<div class="struct" id="struct-{{ struct.name }}">
+  {% filter heading(heading_level, id=html_id ~ struct.name) %}{{ struct.name }}{% endfilter %}
+  
+  {% if struct.doc %}
+  <div class="docstring">
+    {% with heading_level=heading_level + 1 %}
+      {{ struct.doc | markdown | safe }}
+    {% endwith %}
+  </div>
+  {% endif %}
+  
+  {% with heading_level=heading_level + 1 %}
+    {% include "partials/fields.html.jinja" %}
+    {% include "partials/methods.html.jinja" %}
+  {% endwith %}
+</div>

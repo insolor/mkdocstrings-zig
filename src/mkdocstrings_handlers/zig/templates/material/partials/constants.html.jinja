@@ -1,0 +1,15 @@
+{% if data.constants %}
+<section class="constants-section">
+  {% filter heading(heading_level, id=html_id ~ "-constants") %}Constants{% endfilter %}
+  {% for constant in data.constants %}
+    <div class="constant" id="constant-{{ constant.name }}">
+      {{ constant.signature | highlight(language="zig") }}
+      {% if constant.doc %}
+        <div class="docstring">
+          {{ constant.doc | markdown | safe }}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</section>
+{% endif %}
