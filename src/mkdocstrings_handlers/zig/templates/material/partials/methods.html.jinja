@@ -1,27 +1,10 @@
 {% if struct.functions %}
 <div class="methods">
   {% filter heading(heading_level, id=html_id ~ "-methods") %}Methods{% endfilter %}
-  {% for method in struct.functions %}
-  {% with heading_level=heading_level+1 %}
-  <div class="method" id="method-{{ struct.name }}-{{ method.name }}">
-    {% filter heading(heading_level, id=html_id ~ method.name) %}{{ method.name }}{% endfilter %}
-    {% if method.signature %}
-    <div class="signature">
-      {{ method.signature | highlight(language="zig") }}
-    </div>
-    {% endif %}
-    
-    {% if method.doc %}
-    <div class="docstring">
-      {{ method.doc | markdown | safe }}
-    </div>
-    {% endif %}
-    
-    {% with func=method %}
-      {% include "partials/parameters.html.jinja" %}
-    {% endwith %}
-  </div>
-  {% endwith %}
+  {% with heading_level = heading_level + 1 %}
+  {% for func in struct.functions %}
+    {% include "partials/function.html.jinja" %}
   {% endfor %}
+  {% endwith %}
 </div>
 {% endif %}

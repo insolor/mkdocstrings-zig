@@ -1,21 +1,10 @@
 {% if data.functions %}
 <section class="functions-section">
   {% filter heading(heading_level, id=html_id ~ "-functions") %}Functions{% endfilter %}
+  {% with heading_level = heading_level + 1%}
   {% for func in data.functions %}
-  {% with heading_level=heading_level+1 %}
-    <div class="function" id="fn-{{ func.name }}">
-      {% filter heading(heading_level, id=html_id ~ func.name) %}{{ func.name }}{% endfilter %}
-      {{ func.signature | highlight(language="zig") }}
-      
-      {% if func.doc %}
-        <div class="docstring">
-          {{ func.doc | markdown | safe }}
-        </div>
-      {% endif %}
-      
-      {% include "partials/parameters.html.jinja" %}
-    </div>
-  {% endwith %}
+    {% include "partials/function.html.jinja" %}
   {% endfor %}
+  {% endwith %}
 </section>
 {% endif %}
