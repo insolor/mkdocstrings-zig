@@ -157,9 +157,14 @@ class _ZigDocsExtractor:
         return None
 
     def _get_short_const_signature(self, node: Node) -> str:
+        """Use everything before = in the const declaration as a short signature"""
         return self._get_node_text(node).split("=")[0].strip()
 
     def _get_short_struct_signature(self, node: Node) -> str:
+        """
+        Get short const signature and replace `cosnt` with `struct`,
+        so `pub const Point` will be `pub struct Point`.
+        """
         return "struct".join(self._get_short_const_signature(node).split("const"))
 
     def _parse_field(self, node: Node) -> dict | None:
