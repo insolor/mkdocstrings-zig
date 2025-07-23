@@ -27,9 +27,7 @@ class _ZigDocsExtractor:
         """Parse structure docs. A module is a structure too."""
         module_doc = []
         fields = []
-        functions = []
-        constants = []
-        structs = []
+        children = []
 
         for child in node.children:
             if child.type == "comment":
@@ -39,11 +37,17 @@ class _ZigDocsExtractor:
             if child.type == "container_field":
                 field = self._parse_field(child)
                 if field:
+                    if not fields:
+                        children.append({
+                            "node_type": "fields",
+                            "children": fields,
+                        })
+                    
                     fields.append(field)
             elif child.type == "function_declaration":
                 function = self._parse_function(child)
                 if function:
-                    functions.append(function)
+                    children.append(function)
             elif child.type == "variable_declaration":
                 if self._is_import(child):
                     continue
@@ -55,31 +59,27 @@ class _ZigDocsExtractor:
                 doc = self._get_doc_comments(child)
                 struct_node = self._get_struct_declaration(child)
                 if struct_node:
-                    structs.append(
+                    children.append(
                         {
+                            "node_type": "struct",
                             "name": name,
                             "doc": doc,
                             **self._parse_structure(struct_node),
                         },
                     )
                 elif doc:
-                    constants.append({"name": name, "doc": doc})
+                    children.append({
+                        "node_type": "const",
+                        "name": name,
+                        "doc": doc,}
+                    )
 
         result = {}
         if module_doc:
             result["doc"] = "\n".join(module_doc)
 
-        if fields:
-            result["fields"] = fields
-
-        if functions:
-            result["functions"] = functions
-
-        if constants:
-            result["constants"] = constants
-
-        if structs:
-            result["structs"] = structs
+        if children:
+            result["children"] = children
 
         return result
 
@@ -91,6 +91,7 @@ class _ZigDocsExtractor:
         doc_comment = self._get_doc_comments(node)
         if fn_name and doc_comment:
             return {
+                "node_type": "function",
                 "name": fn_name,
                 "doc": doc_comment,
                 "signature": self._get_function_signature(node),
