@@ -36,6 +36,7 @@ ignore = [
     "D105",  # Missing docstring in magic method
     "D212",  # Multi-line docstring summary should start at the first line
     "D205",  # 1 blank line required between summary line and description
+    "D415",  # First line should end with a period, question mark, or exclamation point
     "D417",  # Missing argument description in the docstring
     "E501",  # Line too long
     "ERA001",  # Commented out code

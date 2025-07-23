@@ -109,7 +109,7 @@ class _ZigDocsExtractor:
         return self._get_node_text(node).split("{")[0].strip()
 
     def _get_short_function_signature(self, node: Node) -> str:
-        """Extract short function signature"""
+        """Extract short function signature."""
         return self._get_node_text(node).split("(")[0].strip()
 
     def _get_node_name(self, node: Node) -> str | None:
