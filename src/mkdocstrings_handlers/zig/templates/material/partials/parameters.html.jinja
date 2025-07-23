@@ -1,0 +1,10 @@
+{% if func.parameters %}
+{% filter heading(heading_level, id=html_id ~ "-functions") %}Parameters{% endfilter %}
+<ul>
+    {% for param in func.parameters %}
+    <li>
+        <code>{{ param.name }}</code>: {{ param.doc | markdown | safe }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}

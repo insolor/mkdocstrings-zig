@@ -1,18 +1,22 @@
 {% if data.structs %}
 <section class="structs-section">
-  <h2>Structures</h2>
+  {% filter heading(heading_level, id=html_id ~ "-structures") %}Structures{% endfilter %}
   {% for struct in data.structs %}
     <div class="struct" id="struct-{{ struct.name }}">
-      <h3>{{ struct.name }}</h3>
+      {% filter heading(heading_level + 1, id=html_id ~ struct.name) %}{{ struct.name }}{% endfilter %}
       
       {% if struct.doc %}
       <div class="docstring">
-        {{ struct.doc | markdown | safe }}
+        {% with heading_level=heading_level + 1 %}
+          {{ struct.doc | markdown | safe }}
+        {% endwith %}
       </div>
       {% endif %}
       
-      {% include "partials/fields.html.jinja" %}
-      {% include "partials/methods.html.jinja" %}
+      {% with heading_level=heading_level+ 2 %}
+        {% include "partials/fields.html.jinja" %}
+        {% include "partials/methods.html.jinja" %}
+      {% endwith %}
     </div>
   {% endfor %}
 </section>

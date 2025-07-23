@@ -100,7 +100,7 @@ class ZigHandler(BaseHandler):
         # It contains both the global and local options, combined together.
 
         # You might want to get the template based on the data type.
-        template = self.env.get_template("data.html.jinja")
+        template = self.env.get_template("root.html.jinja")
         # All the following variables will be available in the Jinja templates.
         return template.render(
             config=options,

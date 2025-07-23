@@ -1,6 +1,6 @@
 {% if struct.functions %}
 <div class="methods">
-  <h4>Methods</h4>
+  {% filter heading(heading_level, id=html_id ~ "-methods") %}Methods{% endfilter %}
   {% for method in struct.functions %}
   <div class="method" id="method-{{ struct.name }}-{{ method.name }}">
     {% if method.signature %}
@@ -15,18 +15,9 @@
     </div>
     {% endif %}
     
-    {% if method.parameters %}
-    <div class="parameters">
-      <h6>Parameters</h6>
-      <ul>
-        {% for param in method.parameters %}
-        <li>
-          <code>{{ param.name }}</code>: {{ param.doc | default("") | markdown | safe }}
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
+    {% with func=method %}
+      {% include "partials/parameters.html.jinja" %}
+    {% endwith %}
   </div>
   {% endfor %}
 </div>

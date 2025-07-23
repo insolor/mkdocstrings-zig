@@ -6,6 +6,7 @@
   {% with obj = data, html_id = data.path %}
     {% include "partials/heading.html.jinja" %}
     
+    {% with heading_level=heading_level+1 %}
     <div class="doc doc-contents {% if root %}first{% endif %}">
       {% block contents scoped %}
         {% include "partials/docstring.html.jinja" %}
@@ -14,5 +15,6 @@
         {% include "partials/functions.html.jinja" %}
       {% endblock contents %}
     </div>
+    {% endwith %}
   {% endwith %}
 </div>

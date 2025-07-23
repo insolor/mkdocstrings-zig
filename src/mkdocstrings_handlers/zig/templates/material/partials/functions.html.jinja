@@ -1,6 +1,6 @@
 {% if data.functions %}
 <section class="functions-section">
-  <h2>Functions</h2>
+  {% filter heading(heading_level, id=html_id ~ "-functions") %}Functions{% endfilter %}
   {% for func in data.functions %}
     <div class="function" id="fn-{{ func.name }}">
       {{ func.signature | highlight(language="zig") }}
@@ -11,16 +11,7 @@
         </div>
       {% endif %}
       
-      {% if func.parameters %}
-        <h4>Parameters</h4>
-        <ul>
-          {% for param in func.parameters %}
-            <li>
-              <code>{{ param.name }}</code>: {{ param.doc | markdown | safe }}
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+      {% include "partials/parameters.html.jinja" %}
     </div>
   {% endfor %}
 </section>
