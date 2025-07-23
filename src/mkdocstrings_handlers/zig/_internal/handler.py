@@ -79,7 +79,6 @@ class ZigHandler(BaseHandler):
 
     def collect(self, identifier: str, options: ZigOptions) -> CollectorItem:  # noqa: ARG002
         """Collect data given an identifier and selection configuration."""
-        
         path = Path(identifier)
         if path.is_dir():
             modules = []
