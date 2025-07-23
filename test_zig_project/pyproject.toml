@@ -10,6 +10,7 @@ dependencies = [
     "mkdocs-material>=9.5",
     "mkdocstrings-zig",
     "typing_extensions",
+    "mkdocs-minify-plugin>=0.8.0",
 ]
 
 [tool.uv.sources]

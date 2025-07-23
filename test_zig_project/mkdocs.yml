@@ -4,5 +4,8 @@ theme:
   name: material
 
 plugins:
-- mkdocstrings:
-    default_handler: zig
+  - mkdocstrings:
+      default_handler: zig
+  - search
+  - minify:
+      minify_html: true
