@@ -15,7 +15,7 @@
     
     {% include "parameters.html.jinja" %}
     
-    {% with parent = parent.return_struct %}
+    {% with parent = parent.return_struct, heading_level = heading_level + 1 %}
       {% include "struct.html.jinja" %}
     {% endwith %}
   </div>
