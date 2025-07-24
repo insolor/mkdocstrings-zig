@@ -219,6 +219,8 @@ class _ZigDocsExtractor:
                     continue
 
                 parsed_struct["node_type"] = "struct"
+                parsed_struct["name"] = "return_struct"
+                parsed_struct["short_signature"] = "return struct"
                 return parsed_struct
 
         return None

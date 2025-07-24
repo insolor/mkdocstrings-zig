@@ -104,6 +104,8 @@ def test_parser() -> None:
                 "short_signature": "fn GenericStructure",
                 "return_struct": {
                     "node_type": "struct",
+                    "name": "return_struct",
+                    "short_signature": "return struct",
                     "children": [
                         {
                             "node_type": "fields",
