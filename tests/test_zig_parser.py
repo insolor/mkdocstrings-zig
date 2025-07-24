@@ -106,6 +106,7 @@ def test_parser() -> None:
                     "node_type": "struct",
                     "children": [
                         {
+                            "node_type": "fields",
                             "children": [
                                 {
                                     "doc": "Contained value",
@@ -113,7 +114,6 @@ def test_parser() -> None:
                                     "type": "T",
                                 },
                             ],
-                            "node_type": "fields",
                         },
                     ],
                 },
