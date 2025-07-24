@@ -34,7 +34,7 @@ class _ZigDocsExtractor:
                 text = self._get_node_text(child)
                 if text.startswith("//!"):
                     module_doc.append(text[3:].strip())
-            if child.type == "container_field":
+            elif child.type == "container_field":
                 field = self._parse_field(child)
                 if field:
                     if not fields:
@@ -186,11 +186,13 @@ class _ZigDocsExtractor:
                 field_type = self._get_node_text(child)
                 break
 
-        if field_name and field_type:
+        doc = self._get_doc_comments(node)
+
+        if field_name and field_type and doc:
             return {
                 "name": field_name,
                 "type": field_type,
-                "doc": self._get_doc_comments(node),
+                "doc": doc,
             }
 
         return None
