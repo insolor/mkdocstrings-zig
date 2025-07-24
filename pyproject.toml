@@ -111,3 +111,6 @@ ci = [
 
 [tool.uv]
 default-groups = ["maintain", "ci", "docs"]
+
+[tool.poe.tasks]
+check = "ruff check . --config config/ruff.toml"
