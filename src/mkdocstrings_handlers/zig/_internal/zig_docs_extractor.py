@@ -94,14 +94,19 @@ class _ZigDocsExtractor:
         fn_name = self._get_node_name(node)
         doc_comment = self._get_doc_comments(node)
         if fn_name and doc_comment:
-            return {
+            result = {
                 "node_type": "function",
                 "name": fn_name,
                 "doc": doc_comment,
                 "signature": self._get_function_signature(node),
                 "short_signature": self._get_short_function_signature(node),
-                "return_struct": self._get_return_struct(node),
             }
+
+            return_struct = self._get_return_struct(node)
+            if return_struct:
+                result["return_struct"] = return_struct
+
+            return result
 
         return None
 
