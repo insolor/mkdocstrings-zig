@@ -42,3 +42,8 @@ td p {
   margin: 0;
   padding: 0;
 }
+
+.md-typeset h5 {
+  color: var(--md-default-fg-color);
+  text-transform: none;
+}
