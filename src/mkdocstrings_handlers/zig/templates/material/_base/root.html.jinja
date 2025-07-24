@@ -1,1 +1,5 @@
-{% include "partials/modules.html.jinja" %}
+{% for child in data %}
+  {% with data=child %}
+    {% include "module.html.jinja" %}
+  {% endwith %}
+{% endfor %}

@@ -48,3 +48,11 @@ const std = @import("std");
 
 /// This imports the separate module containing `root.zig`. Take a look in `build.zig` for details.
 const lib = @import("test_zig_project_lib");
+
+/// Generic structure factory example
+fn GenericStructure(comptime T: type) type {
+    return struct {
+        /// Contained value
+        value: T,
+    };
+}

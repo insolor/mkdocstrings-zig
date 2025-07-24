@@ -13,6 +13,10 @@
     </div>
     {% endif %}
     
-    {% include "partials/parameters.html.jinja" %}
+    {% include "parameters.html.jinja" %}
+    
+    {% with parent = parent.return_struct %}
+      {% include "struct.html.jinja" %}
+    {% endwith %}
   </div>
 {% endif %}

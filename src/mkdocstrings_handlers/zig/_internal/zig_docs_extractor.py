@@ -94,13 +94,19 @@ class _ZigDocsExtractor:
         fn_name = self._get_node_name(node)
         doc_comment = self._get_doc_comments(node)
         if fn_name and doc_comment:
-            return {
+            result = {
                 "node_type": "function",
                 "name": fn_name,
                 "doc": doc_comment,
                 "signature": self._get_function_signature(node),
                 "short_signature": self._get_short_function_signature(node),
             }
+
+            return_struct = self._get_return_struct(node)
+            if return_struct:
+                result["return_struct"] = return_struct
+
+            return result
 
         return None
 
@@ -172,7 +178,7 @@ class _ZigDocsExtractor:
         field_name = None
         field_type = None
         for child in node.children:
-            if child.type == "identifier":
+            if child.type == "identifier" and not field_name:
                 field_name = self._get_node_text(child)
             elif child.type == ":":
                 continue
@@ -186,6 +192,50 @@ class _ZigDocsExtractor:
                 "type": field_type,
                 "doc": self._get_doc_comments(node),
             }
+
+        return None
+
+    def _get_return_struct(self, node: Node) -> dict | None:
+        """
+        Parse structure returned from a function.
+        Probably recursive search for return is needed, but for we support only basic case.
+        """
+        function_body = self._get_function_body(node)
+        if not function_body:
+            return None
+
+        for child in function_body.children:
+            if child.type == "expression_statement":
+                return_expression = self._get_return_expression(child)
+                if not return_expression:
+                    continue
+
+                struct = self._get_struct_declaration(return_expression)
+                if not struct:
+                    continue
+
+                parsed_struct = self._parse_structure(struct)
+                if not parsed_struct:
+                    continue
+
+                parsed_struct["node_type"] = "struct"
+                return parsed_struct
+
+        return None
+
+    def _get_function_body(self, node: Node) -> Node | None:
+        """Get the block which represents the function's body"""
+        for child in node.children:
+            if child.type == "block":
+                return child
+
+        return None
+
+    def _get_return_expression(self, node: Node) -> Node | None:
+        """Check if the statement is return and return the return value"""
+        for child in node.children:
+            if child.type == "return_expression":
+                return child
 
         return None
 
@@ -217,6 +267,14 @@ def _main() -> None:
             .y = std.math.maxInt(u32),
         };
     };
+
+    /// Generic structure factory example
+    fn GenericStructure(comptime T: type) type {
+        return struct {
+            /// Contained value
+            value: T,
+        };
+    }
     """
 
     extractor = _ZigDocsExtractor(code)

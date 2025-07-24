@@ -12,7 +12,7 @@ def test_parser() -> None:
 
     /// Adds two numbers.
     fn add(a: i32, b: i32) i32 {
-        return a  b;
+        return a + b;
     }
 
     /// A constant named PI.
@@ -32,6 +32,14 @@ def test_parser() -> None:
     /// Main function
     pub fn main() void {
         std.print("Hello, world!\n");
+    }
+
+    /// Generic structure factory example
+    fn GenericStructure(comptime T: type) type {
+        return struct {
+            /// Contained value
+            value: T,
+        };
     }
     """
 
@@ -87,6 +95,28 @@ def test_parser() -> None:
                 "doc": "Main function",
                 "signature": "pub fn main() void",
                 "short_signature": "pub fn main",
+            },
+            {
+                "node_type": "function",
+                "name": "GenericStructure",
+                "doc": "Generic structure factory example",
+                "signature": "fn GenericStructure(comptime T: type) type",
+                "short_signature": "fn GenericStructure",
+                "return_struct": {
+                    "node_type": "struct",
+                    "children": [
+                        {
+                            "node_type": "fields",
+                            "children": [
+                                {
+                                    "doc": "Contained value",
+                                    "name": "value",
+                                    "type": "T",
+                                },
+                            ],
+                        },
+                    ],
+                },
             },
         ],
     }
