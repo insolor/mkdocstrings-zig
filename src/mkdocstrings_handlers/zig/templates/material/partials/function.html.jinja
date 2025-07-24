@@ -14,5 +14,9 @@
     {% endif %}
     
     {% include "partials/parameters.html.jinja" %}
+    
+    {% with parent = parent.return_struct %}
+      {% include "partials/struct.html.jinja" %}
+    {% endwith %}
   </div>
 {% endif %}

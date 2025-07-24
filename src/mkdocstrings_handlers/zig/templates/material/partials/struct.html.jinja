@@ -1,7 +1,9 @@
-{% if parent.node_type == "struct" %}
+{% if parent and parent.node_type == "struct" %}
   <div class="struct" id="struct-{{ parent.name }}">
+    {% if parent.name %}
     {% filter heading(heading_level, id=html_id ~ parent.name) %}{{ parent.short_signature }}{% endfilter %}
-    
+    {% endif %}
+
     {% if parent.doc %}
     <div class="docstring">
       {% with heading_level=heading_level + 1 %}
