@@ -4,18 +4,18 @@
 
 <div class="doc doc-object doc-data">
   {% with obj = data, html_id = data.path %}
-    {% include "partials/heading.html.jinja" %}
+    {% include "heading.html.jinja" %}
     
     {% with heading_level=heading_level+1 %}
     <div class="doc doc-contents {% if root %}first{% endif %}">
       {% block contents scoped %}
-        {% include "partials/docstring.html.jinja" %}
+        {% include "docstring.html.jinja" %}
         {% for child in data.children %}
           {% with parent=child %}
-            {% include "partials/fields.html.jinja" %}
-            {% include "partials/constant.html.jinja" %}
-            {% include "partials/struct.html.jinja" %}
-            {% include "partials/function.html.jinja" %}
+            {% include "fields.html.jinja" %}
+            {% include "constant.html.jinja" %}
+            {% include "struct.html.jinja" %}
+            {% include "function.html.jinja" %}
           {% endwith %}
         {% endfor %}
       {% endblock contents %}
