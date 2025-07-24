@@ -33,6 +33,14 @@ def test_parser() -> None:
     pub fn main() void {
         std.print("Hello, world!\n");
     }
+
+    /// Generic structure factory example
+    fn GenericStructure(comptime T: type) type {
+        return struct {
+            /// Contained value
+            value: T,
+        };
+    }
     """
 
     parsed = ZigDocsExtractor(zig_code).get_docs()
@@ -45,6 +53,7 @@ def test_parser() -> None:
                 "name": "add",
                 "signature": "fn add(a: i32, b: i32) i32",
                 "short_signature": "fn add",
+                "return_struct": None,
             },
             {
                 "node_type": "const",
@@ -87,6 +96,29 @@ def test_parser() -> None:
                 "doc": "Main function",
                 "signature": "pub fn main() void",
                 "short_signature": "pub fn main",
+                "return_struct": None,
+            },
+            {
+                "node_type": "function",
+                "name": "GenericStructure",
+                "doc": "Generic structure factory example",
+                "signature": "fn GenericStructure(comptime T: type) type",
+                "short_signature": "fn GenericStructure",
+                "return_struct": {
+                    "node_type": "struct",
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "doc": "Contained value",
+                                    "name": "value",
+                                    "type": "T",
+                                },
+                            ],
+                            "node_type": "fields",
+                        },
+                    ],
+                },
             },
         ],
     }
