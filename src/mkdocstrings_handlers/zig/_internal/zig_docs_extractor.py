@@ -189,7 +189,7 @@ class _ZigDocsExtractor:
             }
 
         return None
-    
+
     def _get_return_struct(self, node: Node) -> dict | None:
         """
         Parse structure returned from a function.
