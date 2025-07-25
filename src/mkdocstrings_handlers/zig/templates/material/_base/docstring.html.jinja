@@ -1,11 +1,5 @@
-{% if data.doc %}
+{% if parent.doc %}
   <div class="docstring">
-    {{ data.doc | markdown | safe }}
-    {% if data.deprecated %}
-      <div class="admonition warning">
-        <p class="admonition-title">Deprecated</p>
-        {{ data.deprecated | markdown | safe }}
-      </div>
-    {% endif %}
+    {{ parent.doc | markdown | safe }}
   </div>
 {% endif %}
