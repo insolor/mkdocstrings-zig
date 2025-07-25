@@ -3,7 +3,7 @@
 {% endblock logs %}
 
 <div class="doc doc-object doc-data">
-  {% with obj = data, html_id = data.path %}
+  {% with parent = data, html_id = data.path %}
     {% include "heading.html.jinja" %}
     
     {% with heading_level=heading_level+1 %}

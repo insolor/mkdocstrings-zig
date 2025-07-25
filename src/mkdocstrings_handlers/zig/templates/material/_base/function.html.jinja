@@ -7,12 +7,7 @@
     </div>
     {% endif %}
     
-    {% if parent.doc %}
-    <div class="docstring">
-      {{ parent.doc | markdown | safe }}
-    </div>
-    {% endif %}
-    
+    {% include "docstring.html.jinja" %}
     {% include "parameters.html.jinja" %}
     
     {% with parent = parent.return_struct, heading_level = heading_level + 1 %}
