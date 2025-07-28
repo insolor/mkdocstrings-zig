@@ -31,11 +31,10 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         body_path: release-notes.md
-    
+
     - name: Build project
       run: |
-        pipx install pdm
-        pdm build
+        uv build
 
     - name: Publish on pypi.org
       uses: pypa/gh-action-pypi-publish@v1.12.4
