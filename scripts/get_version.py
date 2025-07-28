@@ -1,7 +1,5 @@
 # Get current project version from Git tags or changelog.
 
-import re
-from contextlib import suppress
 from pathlib import Path
 
 from pdm.backend.hooks.version import SCMVersion, Version, default_version_formatter, get_version_from_scm
