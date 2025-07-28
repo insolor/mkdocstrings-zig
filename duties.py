@@ -46,23 +46,6 @@ def material_insiders() -> Iterator[bool]:
         yield False
 
 
-def _get_changelog_version() -> str:
-    changelog_version_re = re.compile(r"^## \[(\d+\.\d+\.\d+)\].*$")
-    with Path(__file__).parent.joinpath("CHANGELOG.md").open("r", encoding="utf8") as file:
-        return next(filter(bool, map(changelog_version_re.match, file))).group(1)  # type: ignore[union-attr]
-
-
-@duty
-def changelog(ctx: Context, bump: str = "") -> None:
-    """Update the changelog in-place with latest commits.
-
-    Parameters:
-        bump: Bump option passed to git-changelog.
-    """
-    ctx.run(tools.git_changelog(bump=bump or None), title="Updating changelog")
-    ctx.run(tools.yore.check(bump=bump or _get_changelog_version()), title="Checking legacy code")
-
-
 @duty(pre=["check-quality", "check-types", "check-docs", "check-api"])
 def check(ctx: Context) -> None:
     """Check it all!"""
@@ -178,7 +161,7 @@ def release(ctx: Context, version: str = "") -> None:
     """
     if not (version := (version or input("> Version to release: ")).strip()):
         ctx.run("false", title="A version must be provided")
-    ctx.run("git add pyproject.toml CHANGELOG.md", title="Staging files", pty=PTY)
+    ctx.run("git add pyproject.toml", title="Staging files", pty=PTY)
     ctx.run(["git", "commit", "-m", f"chore: Prepare release {version}"], title="Committing changes", pty=PTY)
     ctx.run(f"git tag {version}", title="Tagging commit", pty=PTY)
     ctx.run("git push", title="Pushing commits", pty=False)

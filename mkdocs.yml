@@ -4,7 +4,7 @@ site_url: "https://insolor.github.io/mkdocstrings-zig"
 repo_url: "https://github.com/insolor/mkdocstrings-zig"
 repo_name: "insolor/mkdocstrings-zig"
 site_dir: "site"
-watch: [mkdocs.yml, README.md, CONTRIBUTING.md, CHANGELOG.md, src/mkdocstrings_handlers]
+watch: [mkdocs.yml, README.md, CONTRIBUTING.md, src/mkdocstrings_handlers]
 copyright: Copyright &copy; 2025 insolor
 edit_uri: edit/main/docs/
 
@@ -16,7 +16,6 @@ validation:
 nav:
 - Home:
   - Overview: index.md
-  - Changelog: changelog.md
   - Credits: credits.md
   - License: license.md
 - Usage:
