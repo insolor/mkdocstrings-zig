@@ -168,7 +168,7 @@ class _ZigDocsExtractor:
 
     def _get_short_struct_signature(self, node: Node) -> str:
         """
-        Get short const signature and replace `cosnt` with `struct`,
+        Get short const signature and replace `const` with `struct`,
         so `pub const Point` will be `pub struct Point`.
         """
         return "struct".join(self._get_short_const_signature(node).split("const"))
