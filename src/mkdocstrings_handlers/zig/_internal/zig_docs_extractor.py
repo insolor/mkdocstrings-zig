@@ -36,16 +36,18 @@ class _ZigDocsExtractor:
                     module_doc.append(text[3:].strip())
             elif child.type == "container_field":
                 field = self._parse_field(child)
-                if field:
-                    if not fields:
-                        children.append(
-                            {
-                                "node_type": "fields",
-                                "children": fields,
-                            },
-                        )
+                if not field:
+                    continue
 
-                    fields.append(field)
+                if not fields:
+                    children.append(
+                        {
+                            "node_type": "fields",
+                            "children": fields,
+                        },
+                    )
+
+                fields.append(field)
             elif child.type == "function_declaration":
                 function = self._parse_function(child)
                 if function:
