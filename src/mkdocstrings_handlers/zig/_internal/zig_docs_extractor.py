@@ -207,23 +207,25 @@ class _ZigDocsExtractor:
             return None
 
         for child in function_body.children:
-            if child.type == "expression_statement":
-                return_expression = self._get_return_expression(child)
-                if not return_expression:
-                    continue
+            if child.type != "expression_statement":
+                continue
 
-                struct = self._get_struct_declaration(return_expression)
-                if not struct:
-                    continue
+            return_expression = self._get_return_expression(child)
+            if not return_expression:
+                continue
 
-                parsed_struct = self._parse_structure(struct)
-                if not parsed_struct:
-                    continue
+            struct = self._get_struct_declaration(return_expression)
+            if not struct:
+                continue
 
-                parsed_struct["node_type"] = "struct"
-                parsed_struct["name"] = "return_struct"
-                parsed_struct["short_signature"] = "return struct"
-                return parsed_struct
+            parsed_struct = self._parse_structure(struct)
+            if not parsed_struct:
+                continue
+
+            parsed_struct["node_type"] = "struct"
+            parsed_struct["name"] = "return_struct"
+            parsed_struct["short_signature"] = "return struct"
+            return parsed_struct
 
         return None
 
