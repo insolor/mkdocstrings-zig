@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import re
 import sys
 from contextlib import contextmanager
 from importlib.metadata import version as pkgversion
