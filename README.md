@@ -20,7 +20,7 @@ pip install mkdocs-material
 pip install typing-extensions
 ```
 
-[mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme installation is optional, but recommended for better look and feel.
+Technically, it can work without [mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme, but it doesn't generate table of contents without the theme.
 
 ### mkdocs.yml example
 
