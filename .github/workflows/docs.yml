@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main      
 
 permissions:
   contents: write
@@ -35,6 +38,7 @@ jobs:
           cp -r test_zig_project/site site/demo
 
       - name: Deploy docs
+        if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           git-config-name: github-actions[bot]
