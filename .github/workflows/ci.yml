@@ -58,7 +58,7 @@ jobs:
       run: make check-api
 
     - name: Store objects inventory for tests
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: objects.inv
         path: site/objects.inv
@@ -115,7 +115,7 @@ jobs:
       run: make setup
 
     - name: Download objects inventory
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: objects.inv
         path: site/
