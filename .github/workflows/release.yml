@@ -11,7 +11,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         fetch-tags: true
@@ -28,7 +28,7 @@ jobs:
       run: uv tool run git-changelog --release-notes > release-notes.md
 
     - name: Create release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         body_path: release-notes.md
 
@@ -37,4 +37,4 @@ jobs:
         uv build
 
     - name: Publish on pypi.org
-      uses: pypa/gh-action-pypi-publish@v1.13.0
+      uses: pypa/gh-action-pypi-publish@v1.14.0
