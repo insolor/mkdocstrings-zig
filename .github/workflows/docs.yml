@@ -25,11 +25,14 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Build docs
-        run: uv run mkdocs build
+        run: |
+          uv sync --no-upgrade
+          uv run mkdocs build
 
       - name: Build demo
         run: |
           cd test_zig_project
+          uv sync --no-upgrade
           uv run mkdocs build
           cd ..
       
