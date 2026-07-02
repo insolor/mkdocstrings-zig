@@ -444,7 +444,7 @@ docs = [
 maintain = [
     { name = "build", specifier = ">=1.2" },
     { name = "git-changelog", specifier = ">=2.5" },
-    { name = "twine", specifier = ">=5.1" },
+    { name = "twine", specifier = ">=6.2.0" },
     { name = "yore", specifier = ">=0.3.3" },
 ]
 

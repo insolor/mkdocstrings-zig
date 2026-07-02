@@ -79,7 +79,7 @@ data = [
 maintain = [
     "build>=1.2",
     "git-changelog>=2.5",
-    "twine>=5.1",
+    "twine>=6.2.0",
     "yore>=0.3.3",
 ]
 ci = [
