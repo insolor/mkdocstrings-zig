@@ -407,15 +407,15 @@ wheels = [
 
 [[package]]
 name = "duty"
-version = "1.6.0"
+version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "failprint" },
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e0/8e/d03f47a5c31ccfc1cf458d46ca064ba930d53a2a177653459ab40da0506a/duty-1.6.0.tar.gz", hash = "sha256:9e59f19edceb537da5291f7ebe830895f36e3ab20ec9eadc682e8a5308d2f2b2", size = 124680, upload-time = "2025-03-01T15:06:03.21Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/2c/71621d8745704916b6c82676507e1846879f0e03efc49030b78f54d005e9/duty-1.9.0.tar.gz", hash = "sha256:83ea0531f470ec49f6acf53d28fd36cabfe000e823f1643e8b0f68b89e7de0dc", size = 137218, upload-time = "2026-02-07T11:54:46.402Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/2c/c2c7e2e7bd7fcf128cc9565f7fb01771b19e281da9267cce3eb49946a8e2/duty-1.6.0-py3-none-any.whl", hash = "sha256:0bad3b0654f3397245001d7e665f56fae0bf86de6aa766b55052b605d46f2681", size = 107255, upload-time = "2025-03-01T15:06:01.748Z" },
+    { url = "https://files.pythonhosted.org/packages/54/da/69c8dc76088584eae227d6ec3e682aabf972fbfe39bc037b6d6820c4529a/duty-1.9.0-py3-none-any.whl", hash = "sha256:f538c4afc0f513fa7cb9979ab39ada05abcd62afe9c1df90768749f09f0bdbc1", size = 125656, upload-time = "2026-02-07T11:54:44.577Z" },
 ]
 
 [[package]]
@@ -441,16 +441,16 @@ wheels = [
 
 [[package]]
 name = "failprint"
-version = "1.0.4"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansimarkup" },
     { name = "jinja2" },
     { name = "ptyprocess", marker = "sys_platform != 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b7/b9/c3272cbace3680c0726091c918b67f319d3e3ac6b1597a2282a1f34e4ab4/failprint-1.0.4.tar.gz", hash = "sha256:29ddff27b49fe9e6905f12c2e23ce2d48499f1f5e6f80590034a82b51453c27c", size = 47635, upload-time = "2025-07-15T12:12:59.541Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/79/5e/a0135b4cb91fa3f73e76ee419c67efae904f283619640894100b126a1052/failprint-1.1.0.tar.gz", hash = "sha256:2c16e134781a743e6ee1e4a3d7acf314faa132e5435a8b5a8b774e87a34dc694", size = 47978, upload-time = "2026-02-07T17:31:10.624Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/22/f7/35b389bfad958463fbee52aaca324484caf3ed6d7b3657f8df4af4a068f2/failprint-1.0.4-py3-none-any.whl", hash = "sha256:d92d4b58d0ea2d455084c6f7ef520b5d585e2ed52940663646f9be70f3608d6f", size = 21393, upload-time = "2025-07-15T12:12:58.362Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/a0/dec6c7f8e6fa37aaa91e45c7f56db964320c3e976ef04745c4e6a4369f74/failprint-1.1.0-py3-none-any.whl", hash = "sha256:44a21d49b3d36056e080ab7d9abf1f2269efa49c60b663e63d4ecebbfc5090e8", size = 21446, upload-time = "2026-02-07T17:31:08.793Z" },
 ]
 
 [[package]]
