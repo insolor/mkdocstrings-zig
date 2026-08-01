@@ -17,7 +17,7 @@ jobs:
         fetch-tags: true
 
     - name: Setup Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v7
       with:
         python-version: "3.12"
 
@@ -37,4 +37,4 @@ jobs:
         uv build
 
     - name: Publish on pypi.org
-      uses: pypa/gh-action-pypi-publish@v1.14.0
+      uses: pypa/gh-action-pypi-publish@v1.14.2
