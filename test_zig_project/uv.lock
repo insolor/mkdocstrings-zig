@@ -431,7 +431,7 @@ docs = [
     { name = "markdown-callouts", specifier = ">=0.4" },
     { name = "markdown-exec", specifier = ">=1.8" },
     { name = "mkdocs", specifier = ">=1.6" },
-    { name = "mkdocs-coverage", specifier = ">=1.0" },
+    { name = "mkdocs-coverage", specifier = ">=2.0.0" },
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.2" },
     { name = "mkdocs-llmstxt", specifier = ">=0.2" },
     { name = "mkdocs-material", specifier = ">=9.5" },
