@@ -445,7 +445,7 @@ maintain = [
     { name = "build", specifier = ">=1.5.0" },
     { name = "git-changelog", specifier = ">=2.5" },
     { name = "twine", specifier = ">=6.2.0" },
-    { name = "yore", specifier = ">=0.3.3" },
+    { name = "yore", specifier = ">=0.4.7" },
 ]
 
 [[package]]
