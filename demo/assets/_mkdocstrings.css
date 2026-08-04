@@ -1,0 +1,49 @@
+
+.table-container {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.struct-fields {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.struct-fields th,
+.struct-fields td {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--md-typeset-table-color);
+  vertical-align: top;
+}
+
+.struct-fields th {
+  background-color: var(--md-code-bg-color);
+  font-weight: 600;
+  text-align: left;
+}
+
+.struct-fields .field-name {
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.struct-fields .field-type {
+  min-width: 100px;
+}
+
+.struct-fields code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.9em;
+}
+
+td p {
+  margin: 0;
+  padding: 0;
+}
+
+.md-typeset h5 {
+  color: var(--md-default-fg-color);
+  text-transform: none;
+}
