@@ -29,7 +29,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "mkdocstrings>=0.18,<1",
+    "mkdocstrings>=0.29.1,<2",
     "tree-sitter>=0.25.0",
     "tree-sitter-zig>=1.1.2",
 ]

@@ -36,6 +36,9 @@ class ZigHandler(BaseHandler):
     enable_inventory: ClassVar[bool] = False
     """Whether this handler is interested in enabling the creation of the `objects.inv` Sphinx inventory file."""
 
+    fallback_config: ClassVar[dict[str, Any]] = {}
+    """Fallback configuration for resolving anchors with mkdocstrings versions before 1.0."""
+
     fallback_theme: ClassVar[str] = "material"
     """The theme to fallback to."""
 
