@@ -411,7 +411,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "mkdocstrings", specifier = ">=0.18,<1" },
+    { name = "mkdocstrings", specifier = ">=0.18,<2" },
     { name = "tree-sitter", specifier = ">=0.25.0" },
     { name = "tree-sitter-zig", specifier = ">=1.1.2" },
 ]
@@ -628,7 +628,7 @@ requires-dist = [
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.2" },
     { name = "mkdocs-material", specifier = ">=9.5" },
     { name = "mkdocs-minify-plugin", specifier = ">=0.8.0" },
-    { name = "mkdocstrings", specifier = ">=0.18,<1" },
+    { name = "mkdocstrings", specifier = ">=0.18" },
     { name = "mkdocstrings-zig", editable = "../" },
     { name = "typing-extensions" },
 ]
