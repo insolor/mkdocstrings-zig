@@ -9,7 +9,7 @@ authors = [{name = "insolor", email = "insolor@gmail.com"}]
 license = "ISC"
 license-files = ["LICENSE"]
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11.5"
 keywords = []
 dynamic = ["version"]
 classifiers = [
