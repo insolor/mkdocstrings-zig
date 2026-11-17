@@ -1,0 +1,12 @@
+# mkdocstrings-zig
+
+> A Zig handler for mkdocstrings.
+
+## Usage
+
+- [Overview](https://insolor.github.io/mkdocstrings-zig/index.md)
+
+## API
+
+- [API reference](https://insolor.github.io/mkdocstrings-zig/reference/api/index.md)
+
